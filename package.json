@@ -1,0 +1,17 @@
+{
+  "name": "deliverymanager",
+  "version": "1.0.0",
+  "description": "Aplicação para construir webApi e aplicação mobile de um delivery",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "^4.0.3",
+    "socket.io": "^4.0.0"
+  }
+}
