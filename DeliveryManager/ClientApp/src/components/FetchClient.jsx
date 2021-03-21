@@ -1,18 +1,11 @@
 ﻿import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export class FetchClient extends Component
 {
     displayName = FetchClient.name;
 
-    static handlerEdit = function (id) { }
 
-    static handlerDelete(clientId) {
-        fetch('Clientes/Delete/' +  clientId )
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ cliente: data, loading: false });
-            });
-    }
     constructor(props){
         super(props);
         this.state = { cliente: [], loading :true }
@@ -21,19 +14,30 @@ export class FetchClient extends Component
             .then(response => response.json())
             .then(data => {
                 this.setState({ cliente: data, loading: false });
-        });
+            });
+        this.handlerDelete = this.handlerDelete.bind(this);
+        this.handlerEdit = this.handlerEdit.bind(this);
     }
-    
+
+     handlerDelete(clientId) {
+        fetch('Clientes/Delete/' +  clientId )
+            .then(response => response.json())
+            .then(data => {
+                
+            });
+     }
+
+     handlerEdit() { }
 
     static renderClientTable(cliente) {
         return (
+             
             <table className='table'>
                 <thead>
                     <tr>
                         <th>Nome</th>
                         <th>Cpf</th>
                         <th>Telefone</th>
-                        <th>ação</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,10 +46,9 @@ export class FetchClient extends Component
                             <td>{cliente.nome}</td>
                             <td>{cliente.cpf}</td>
                             <td>{cliente.telefone}</td>
-                            <td>{ console.log(cliente)}</td>
                             <td>
-                                <button className="btn btn-success" onClick={id => this.handlerEdit(cliente.id_cliente)}>Editar</button>
-                                <button className="btn btn-danger" onClick={id => this.handlerDelete(cliente.id_cliente)}>Deletar</button>
+                                <button className="btn btn-success" onClick={id => this.handlerEdit(cliente.id_cliente)}>Editar</button>&nbsp;                                
+                                <button className="btn btn-danger " onClick={id => this.handlerDelete(cliente.id_cliente)}>Deletar</button>
                             </td>
                         </tr>
                     )}
@@ -61,8 +64,12 @@ export class FetchClient extends Component
 
         return (
             <div>
-                <h1>Clientes</h1>
-                <p>This component demonstrates fetching data from the server.</p>
+                <h1>Clientes</h1> 
+                <p>
+                    <Link to={"/addclient"}>
+                        <button className="btn btn-primary" >Criar Usuário</button>
+                    </Link> 
+                </p>
                 {contents}
             </div>
         );

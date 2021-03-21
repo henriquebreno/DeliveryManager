@@ -20,9 +20,9 @@ namespace DeliveryManager.Controllers
         }
 
         // GET: Clientes
-        public List<Cliente> Index()
+        public async Task<IActionResult> Index()
         {
-            return  _context.Cliente.ToList();
+            return Json(await _context.Cliente.ToListAsync());
         }
 
         // GET: Clientes/Details/5
@@ -131,7 +131,7 @@ namespace DeliveryManager.Controllers
                 return NotFound();
             }
 
-            return View(cliente);
+            return await DeleteConfirmed(cliente.Id_cliente);
         }
 
         // POST: Clientes/Delete/5
