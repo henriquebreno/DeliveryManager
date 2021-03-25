@@ -53,7 +53,7 @@ namespace DeliveryManager.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken] inserir depois
         public async Task<IActionResult> Create([Bind("Cpf,Nome,Telefone,Id_cliente")] Cliente cliente)
         {
             if (ModelState.IsValid)
@@ -131,7 +131,7 @@ namespace DeliveryManager.Controllers
                 return NotFound();
             }
 
-            return await DeleteConfirmed(cliente.Id_cliente);
+            return View(cliente);
         }
 
         // POST: Clientes/Delete/5

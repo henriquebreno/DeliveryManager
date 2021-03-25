@@ -21,6 +21,7 @@ namespace DeliveryManager.Model
         public string Telefone { get; set; }
 
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("id_cliente")]
         public int Id_cliente { get; set; }
     }
