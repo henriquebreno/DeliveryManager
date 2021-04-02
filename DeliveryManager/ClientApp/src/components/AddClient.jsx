@@ -7,6 +7,7 @@ export class Client
         this.cpf = "";
         this.nome = "";
         this.telefone = "";
+        this.id = 0;
     }
 }
 
@@ -44,31 +45,33 @@ export class AddClient extends Component
     }
 
     handleSave(event) {
+ 
         event.preventDefault();
-        let formData = new FormData();
-        formData.append('nome', '448146');
-        formData.append('telefone', '466464');
-        formData.append('cpf', '161616');
+        const data = new FormData(event.target);
 
-        const options = {
-            method: 'POST',
-            body: formData
+        // PUT request for Edit employee.  
+        if (this.state.clientData.id) {
+            fetch('Clientes/Edit', {
+                method: 'PUT',
+                body: data,
 
+            }).then((response) => response.json())
+                .then((responseJson) => {
+                    this.props.history.push("/fetchemployee");
+                })
         }
 
-        //fetch('/Clientes/Create', options)
-        //    .then(response => response.json())
-        //    .then(responseJson => {
-        //        console.log(responseJson);
-        //        this.props.history.push("/fetchclient");
-        //    }).catch(function (err) {
-        //        console.error(err);
-        //    });
+        // POST request for Add employee.  
+        else {
+            fetch('Clientes/Create', {
+                method: 'POST',
+                body: data,
 
-        const response = fetch('/Clientes/Create', options)
-        console.log(response);
-
-        
+            }).then((response) => response.json())
+                .then((responseJson) => {
+                    this.props.history.push("/fetchemployee");
+                })
+        }              
 
     }
 
