@@ -1,6 +1,15 @@
 ﻿import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
+export class Client {
+    constructor() {
+        this.cpf = "";
+        this.nome = "";
+        this.telefone = "";
+        this.id = 0;
+    }
+}
+
 export class FetchClient extends Component
 {
     displayName = FetchClient.name;
@@ -20,16 +29,22 @@ export class FetchClient extends Component
     }
 
      handlerDelete(clientId) {
-        fetch('Clientes/Delete/' +  clientId )
-            .then(response => response.json())
-            .then(data => {
-                
-            });
+         fetch('Clientes/Delete/' + clientId, {
+             method: 'POST',
+         })
+         .then(response => response.json())
+             .then(data => {
+             this.setState({ cliente: data, loading: false });
+             this.props.history.push("/fetchclient");
+         });
      }
 
-     handlerEdit() { }
+    handlerEdit(clientId)
+    {
+        this.props.history.push("/Clientes/edit/" + clientId);   
+    }
 
-    static renderClientTable(cliente) {
+    renderClientTable(cliente) {
         return (
              
             <table className='table'>
@@ -60,7 +75,7 @@ export class FetchClient extends Component
     {
         let contents = this.state.loading
             ? <p><em>Loading...</em></p>
-            : FetchClient.renderClientTable(this.state.cliente);
+            : this.renderClientTable(this.state.cliente);
 
         return (
             <div>

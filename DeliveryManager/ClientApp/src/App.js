@@ -16,7 +16,7 @@ export default class App extends Component {
         <Route path='/fetchclient' component={FetchClient} />
         <Route path='/counter' component={Counter} />
         <Route path='/addclient' component={AddClient} />
-        <Route path='/Cliente/edit/:empid' component={AddClient} />
+        <Route path='/Clientes/Edit/:clientId' component={AddClient} />
       </Layout>
     );
   }

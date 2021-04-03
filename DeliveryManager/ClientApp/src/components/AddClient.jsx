@@ -7,7 +7,7 @@ export class Client
         this.cpf = "";
         this.nome = "";
         this.telefone = "";
-        this.id = 0;
+        this.id_cliente = 0;
     }
 }
 
@@ -18,7 +18,20 @@ export class AddClient extends Component
     constructor(props)
     {
         super(props);     
-        this.state = { title: "Create", loading: false, clientData: new Client };
+        this.state = { title: "", loading: true, clientData: new Client };
+
+        var clientId = this.props.match.params["clientId"];
+        if (clientId) {
+            fetch('Clientes/Details/' + clientId)
+                .then((response) => response.json())
+                .then((data) => {
+                    this.setState({ title: "Edit", loading: false, clientData: data });
+
+                })
+        } else
+        {
+            this.state = { title: "Create", loading: false, clientData: new Client };
+        }
 
         this.handleSave = this.handleSave.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
@@ -49,15 +62,18 @@ export class AddClient extends Component
         event.preventDefault();
         const data = new FormData(event.target);
 
+        var clientId = this.state.clientData.id_cliente;
+
         // PUT request for Edit employee.  
-        if (this.state.clientData.id) {
-            fetch('Clientes/Edit', {
+        if (clientId) {
+            data.set("Id_cliente", clientId)
+            fetch('Clientes/Edit/' + clientId, {
                 method: 'PUT',
                 body: data,
 
             }).then((response) => response.json())
                 .then((responseJson) => {
-                    this.props.history.push("/fetchemployee");
+                    this.props.history.push("/fetchclient");
                 })
         }
 
@@ -69,8 +85,8 @@ export class AddClient extends Component
 
             }).then((response) => response.json())
                 .then((responseJson) => {
-                    this.props.history.push("/fetchemployee");
-                })
+                    this.props.history.push("/fetchclient");
+            })
         }              
 
     }
@@ -133,8 +149,8 @@ export class AddClient extends Component
         return (
 
             <div>
-                <h1></h1>
-                    <h3>Clientes</h3>
+                <h1>{this.state.title}</h1>
+                <h3>Clientes</h3>
                 <hr />
                 {contents}
             </div>  

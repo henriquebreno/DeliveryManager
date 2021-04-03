@@ -40,7 +40,7 @@ namespace DeliveryManager.Controllers
                 return NotFound();
             }
 
-            return View(cliente);
+            return Json(cliente);
         }
 
         // GET: Clientes/Create
@@ -78,13 +78,13 @@ namespace DeliveryManager.Controllers
             {
                 return NotFound();
             }
-            return View(cliente);
+            return Json(cliente);
         }
 
         // POST: Clientes/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
+        [HttpPut]
         public async Task<IActionResult> Edit(int id, [Bind("Cpf,Nome,Telefone,Id_cliente")] Cliente cliente)
         {
             if (id != cliente.Id_cliente)
@@ -135,7 +135,7 @@ namespace DeliveryManager.Controllers
 
         // POST: Clientes/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var cliente = await _context.Cliente.FindAsync(id);
