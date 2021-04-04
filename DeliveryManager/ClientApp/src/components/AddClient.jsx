@@ -1,4 +1,5 @@
 ﻿import React, { Component } from 'react';
+import { cpfMask, telephoneMask } from '../shared/mask';
 
 export class Client
 {
@@ -46,13 +47,13 @@ export class AddClient extends Component
     }
     handlerChangeCpf(event) {
         var client = this.state.clientData;
-        client.cpf = event.target.value;
+        client.cpf = cpfMask(event.target.value);
 
         this.setState({ clientData: client });
     }
     handlerChangeTelephone(event) {
         var client = this.state.clientData;
-        client.telefone = event.target.value;
+        client.telefone = telephoneMask(event.target.value);
 
         this.setState({ clientData: client });
     }
@@ -101,27 +102,30 @@ export class AddClient extends Component
     {
         return (
             <form onSubmit={ this.handleSave}>
-                <div className="form-group row" >
-                    <input type="hidden" name="ClienteId"  />
-                </div>
                 < div className="form-group row" >
-                    <label className=" control-label col-md-12" htmlFor="Nome">Nome Completo</label>
-                    <div className="col-md-4">
-                        <input id="teste"
-                            className="form-control"
-                            type="text"
-                            name="Nome"
-                            value={this.state.clientData.nome}
-                            onChange={this.handlerChangeName.bind(this)}/>
+                    <div className="col-md-10" >
+                        <label className=" control-label text-primary h4" htmlFor="Nome">Informações Pessoais</label>
+                        <input type="hidden" name="ClienteId" />
                     </div>
-                </div >
-                < div className="form-group row" >
-                    <label className=" control-label col-md-12" htmlFor="Cpf">Cpf</label>
-                    <div className="col-md-4">
-                        <input className="form-control"
-                            type="text"
-                            name="Cpf" value={this.state.clientData.cpf}
-                            onChange={this.handlerChangeCpf.bind(this)} />
+                    <div class="col-md-5">
+                        <label className=" control-label" htmlFor="Nome">Nome Completo</label>
+                        <div className="">
+                            <input id="teste"
+                                className="form-control"
+                                type="text"
+                                name="Nome"
+                                value={this.state.clientData.nome}
+                                onChange={this.handlerChangeName.bind(this)}/>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <label className=" control-label" htmlFor="Cpf">Cpf</label>
+                        <div className="">
+                            <input className="form-control"
+                                type="text"
+                                name="Cpf" value={this.state.clientData.cpf}
+                                onChange={this.handlerChangeCpf.bind(this)} />
+                        </div>
                     </div>
                 </div >
                 <div className="form-group row">
@@ -134,9 +138,91 @@ export class AddClient extends Component
                     </div>
                 </div>
 
+                < div className="form-group row" >
+                    <div className="col-md-12" >
+                        <label className=" control-label text-primary h4" htmlFor="Nome">Endereço</label>
+                        <input type="hidden" name="ClienteId" />
+                    </div>
+                    <div class="col-md-2">
+                        <label className=" control-label" htmlFor="Nome">CEP</label>
+                        <div className="">
+                            <input id="teste"
+                                className="form-control"
+                                type="text"
+                                name="Nome"
+                                value={this.state.clientData.nome}
+                                onChange={this.handlerChangeName.bind(this)} />
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <label className=" control-label" htmlFor="Cpf">Logradouro</label>
+                        <div className="">
+                            <input className="form-control"
+                                type="text"
+                                name="Cpf" value={this.state.clientData.cpf}
+                                onChange={this.handlerChangeCpf.bind(this)} />
+                        </div>
+                    </div>
+                    <div class="col-md-3    ">
+                        <label className=" control-label" htmlFor="Cpf">Número</label>
+                        <div className="">
+                            <input className="form-control"
+                                type="text"
+                                name="Cpf" value={this.state.clientData.cpf}
+                                onChange={this.handlerChangeCpf.bind(this)} />
+                        </div>
+                    </div>
+                </div >
+                < div className="form-group row" >
+
+                    <div class="col-md-4">
+                        <label className=" control-label" htmlFor="Nome">Bairro</label>
+                        <div className="">
+                            <input id="teste"
+                                className="form-control"
+                                type="text"
+                                name="Nome"
+                                value={this.state.clientData.nome}
+                                onChange={this.handlerChangeName.bind(this)} />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label className=" control-label" htmlFor="Cpf">Cidade</label>
+                        <div className="">
+                            <input className="form-control"
+                                type="text"
+                                name="Cpf" value={this.state.clientData.cpf}
+                                onChange={this.handlerChangeCpf.bind(this)} />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label className=" control-label" htmlFor="Cpf">Estado</label>
+                        <div className="">
+                            <input className="form-control"
+                                type="text"
+                                name="Cpf" value={this.state.clientData.cpf}
+                                onChange={this.handlerChangeCpf.bind(this)} />
+                        </div>
+                    </div>
+                </div >
+                < div className="form-group row" >
+
+                    <div class="col-md-4">
+                        <label className=" control-label" htmlFor="Nome">Complemento</label>
+                        <div className="">
+                            <input id="teste"
+                                className="form-control"
+                                type="text"
+                                name="Nome"
+                                value={this.state.clientData.nome}
+                                onChange={this.handlerChangeName.bind(this)} />
+                        </div>
+                    </div>
+                   
+                </div >
                 <div className="form-group">
-                    <button type="submit" className="btn btn-default" >Save</button>
-                    <button  className="btn" onClick={this.handleCancel}>Cancel</button>
+                    <button type="submit" className="btn btn-default" >Save</button>&nbsp;    
+                    <button className="btn btn-default" onClick={this.handleCancel}>Cancel</button>
                 </div >
             </form >
         )  
@@ -149,7 +235,6 @@ export class AddClient extends Component
         return (
 
             <div>
-                <h1>{this.state.title}</h1>
                 <h3>Clientes</h3>
                 <hr />
                 {contents}
