@@ -15,5 +15,7 @@ namespace DeliveryManager.Configuration
         }
 
         public DbSet<Cliente> Cliente { get; set; } 
+
+        public DbSet<DeliveryManager.Model.Endereco> Endereco { get; set; }
     }
 }

@@ -6,7 +6,7 @@ export class Client {
         this.cpf = "";
         this.nome = "";
         this.telefone = "";
-        this.id = 0;
+        this.id_cliente = 0;
     }
 }
 
@@ -29,19 +29,25 @@ export class FetchClient extends Component
     }
 
      handlerDelete(clientId) {
-         fetch('Clientes/Delete/' + clientId, {
-             method: 'POST',
+         fetch('Enderecos/Delete/' + clientId, {
+             method: 'POST'
          })
-         .then(response => response.json())
-             .then(data => {
-             this.setState({ cliente: data, loading: false });
-             this.props.history.push("/fetchclient");
-         });
-     }
+         .then((response) => response.json())
+         .then((responseJson) => {
+            fetch('Clientes/Delete/' + clientId, {
+                method: 'POST'
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                this.setState({ cliente: data, loading: false });
+                this.props.history.push("/fetchclient");
+            })
+         })
+     } 
 
-    handlerEdit(clientId)
+    handlerEdit(clienteId)
     {
-        this.props.history.push("/Clientes/edit/" + clientId);   
+        this.props.history.push("/Clientes/Edit/" + clienteId);   
     }
 
     renderClientTable(cliente) {

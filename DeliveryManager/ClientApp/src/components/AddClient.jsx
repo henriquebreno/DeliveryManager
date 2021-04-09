@@ -1,16 +1,22 @@
 ﻿import React, { Component } from 'react';
 import { cpfMask, telephoneMask } from '../shared/mask';
 
-export class Client
-{
-    constructor()
-    {
+export class Cliente {
+    constructor() {
         this.cpf = "";
         this.nome = "";
-        this.telefone = "";
-        this.id_cliente = 0;
+        this.telefone = "";       
+        this.id_Cliente = 0;
+        this.logradouro = "";
+        this.cep = "";
+        this.numero = "";
+        this.bairro = "";
+        this.cidade = "";
+        this.estado = "";
+        this.complemento = "";
+        this.id_Endereco = 0
     }
-}
+}  
 
 export class AddClient extends Component
 {
@@ -19,7 +25,7 @@ export class AddClient extends Component
     constructor(props)
     {
         super(props);     
-        this.state = { title: "", loading: true, clientData: new Client };
+        this.state = { title: "", loading: true, clientData: new Cliente };
 
         var clientId = this.props.match.params["clientId"];
         if (clientId) {
@@ -27,11 +33,16 @@ export class AddClient extends Component
                 .then((response) => response.json())
                 .then((data) => {
                     this.setState({ title: "Edit", loading: false, clientData: data });
+                    fetch('Enderecos/Details/' + clientId)
+                        .then((response) => response.json())
+                        .then((data) => {
+                            this.setState({ title: "Edit", loading: false, clientData: data});
 
+                    })
                 })
         } else
         {
-            this.state = { title: "Create", loading: false, clientData: new Client };
+            this.state = { title: "Create", loading: false, clientData: new Cliente  };
         }
 
         this.handleSave = this.handleSave.bind(this);
@@ -39,42 +50,34 @@ export class AddClient extends Component
 
     }
 
-    handlerChangeName(event) {
-        var client = this.state.clientData;
-        client.nome = event.target.value;
 
-        this.setState({ clientData: client });
-    }
-    handlerChangeCpf(event) {
-        var client = this.state.clientData;
-        client.cpf = cpfMask(event.target.value);
-
-        this.setState({ clientData: client });
-    }
-    handlerChangeTelephone(event) {
-        var client = this.state.clientData;
-        client.telefone = telephoneMask(event.target.value);
-
-        this.setState({ clientData: client });
-    }
 
     handleSave(event) {
  
         event.preventDefault();
         const data = new FormData(event.target);
 
-        var clientId = this.state.clientData.id_cliente;
+        var  clientData  = this.state.clientData;
+
 
         // PUT request for Edit employee.  
-        if (clientId) {
-            data.set("Id_cliente", clientId)
-            fetch('Clientes/Edit/' + clientId, {
+        if (clientData.id_Cliente) {
+            data.set("Id_Cliente", clientData.id_Cliente)
+            fetch('Clientes/Edit/' + clientData.id_Cliente, {
                 method: 'PUT',
                 body: data,
-
-            }).then((response) => response.json())
+            })
+                .then((response) => response.json())
                 .then((responseJson) => {
-                    this.props.history.push("/fetchclient");
+                    data.set("Id_Endereco", clientData.id_Endereco)
+                    fetch('Enderecos/Edit/' + clientData.id_Cliente, {
+                        method: 'PUT',
+                        body: data,
+                    })
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        this.props.history.push("/fetchclient");
+                    })
                 })
         }
 
@@ -83,10 +86,18 @@ export class AddClient extends Component
             fetch('Clientes/Create', {
                 method: 'POST',
                 body: data,
-
-            }).then((response) => response.json())
+            })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                data.set("Id_Cliente", responseJson.id_cliente)
+                fetch('Enderecos/Create', {
+                    method: 'POST',
+                    body: data,
+                })
+                .then((response) => response.json())
                 .then((responseJson) => {
                     this.props.history.push("/fetchclient");
+                })
             })
         }              
 
@@ -104,7 +115,7 @@ export class AddClient extends Component
             <form onSubmit={ this.handleSave}>
                 < div className="form-group row" >
                     <div className="col-md-10" >
-                        <label className=" control-label text-primary h4" htmlFor="Nome">Informações Pessoais</label>
+                        <label className=" control-label text-primary h4" htmlFor="Informacoes Pessoais">Informações Pessoais</label>
                         <input type="hidden" name="ClienteId" />
                     </div>
                     <div class="col-md-5">
@@ -115,7 +126,12 @@ export class AddClient extends Component
                                 type="text"
                                 name="Nome"
                                 value={this.state.clientData.nome}
-                                onChange={this.handlerChangeName.bind(this)}/>
+                                onChange={(event) => {
+                                    this.state.clientData.nome = event.target.value;
+                                    this.setState({ clientData: this.state.clientData });
+                                }}
+                                required
+                            />
                         </div>
                     </div>
                     <div class="col-md-5">
@@ -124,7 +140,12 @@ export class AddClient extends Component
                             <input className="form-control"
                                 type="text"
                                 name="Cpf" value={this.state.clientData.cpf}
-                                onChange={this.handlerChangeCpf.bind(this)} />
+                                onChange={(event) => {
+                                    this.state.clientData.cpf = cpfMask(event.target.value);
+                                    this.setState({ clientData: this.state.clientData });
+                                }}  
+                                required
+                            />
                         </div>
                     </div>
                 </div >
@@ -134,24 +155,33 @@ export class AddClient extends Component
                         <input className="form-control"
                             type="text" name="Telefone"
                             value={this.state.clientData.telefone}
-                            onChange={this.handlerChangeTelephone.bind(this)} />
+                            onChange={(event) => {
+                                this.state.clientData.telefone = telephoneMask(event.target.value);
+                                this.setState({ clientData: this.state.clientData });
+                            }}
+                            required
+                        />
                     </div>
                 </div>
 
                 < div className="form-group row" >
                     <div className="col-md-12" >
-                        <label className=" control-label text-primary h4" htmlFor="Nome">Endereço</label>
+                        <label className=" control-label text-primary h4" htmlFor="Endereco">Endereço</label>
                         <input type="hidden" name="ClienteId" />
                     </div>
                     <div class="col-md-2">
                         <label className=" control-label" htmlFor="Nome">CEP</label>
                         <div className="">
-                            <input id="teste"
-                                className="form-control"
+                            <input  className="form-control"
                                 type="text"
-                                name="Nome"
-                                value={this.state.clientData.nome}
-                                onChange={this.handlerChangeName.bind(this)} />
+                                name="Cep"
+                                value={this.state.clientData.cep}
+                                onChange={(event) => {
+                                    this.state.clientData.cep = event.target.value;
+                                    this.setState({ clientData: this.state.clientData });
+                                }} 
+                                required
+                            />
                         </div>
                     </div>
                     <div class="col-md-5">
@@ -159,8 +189,14 @@ export class AddClient extends Component
                         <div className="">
                             <input className="form-control"
                                 type="text"
-                                name="Cpf" value={this.state.clientData.cpf}
-                                onChange={this.handlerChangeCpf.bind(this)} />
+                                name="Logradouro"
+                                value={this.state.clientData.logradouro}
+                                onChange={(event) => {
+                                    this.state.clientData.logradouro = event.target.value;
+                                    this.setState({ clientData: this.state.clientData });
+                                }}
+                                required
+                            />
                         </div>
                     </div>
                     <div class="col-md-3    ">
@@ -168,8 +204,14 @@ export class AddClient extends Component
                         <div className="">
                             <input className="form-control"
                                 type="text"
-                                name="Cpf" value={this.state.clientData.cpf}
-                                onChange={this.handlerChangeCpf.bind(this)} />
+                                name="Numero"
+                                value={this.state.clientData.numero}
+                                onChange={(event) => {
+                                    this.state.clientData.numero = event.target.value;
+                                    this.setState({ clientData: this.state.clientData });
+                                }}
+                                required
+                            />
                         </div>
                     </div>
                 </div >
@@ -181,9 +223,14 @@ export class AddClient extends Component
                             <input id="teste"
                                 className="form-control"
                                 type="text"
-                                name="Nome"
-                                value={this.state.clientData.nome}
-                                onChange={this.handlerChangeName.bind(this)} />
+                                name="Bairro"
+                                value={this.state.clientData.bairro}
+                                onChange={(event) => {
+                                    this.state.clientData.bairro = event.target.value;
+                                    this.setState({ clientData: this.state.clientData });
+                                }}
+                                required
+                            />
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -191,8 +238,14 @@ export class AddClient extends Component
                         <div className="">
                             <input className="form-control"
                                 type="text"
-                                name="Cpf" value={this.state.clientData.cpf}
-                                onChange={this.handlerChangeCpf.bind(this)} />
+                                name="Cidade"
+                                value={this.state.clientData.cidade}
+                                onChange={(event) => {
+                                    this.state.clientData.cidade = event.target.value;
+                                    this.setState({ clientData: this.state.clientData });
+                                }}
+                                required
+                            />
                         </div>
                     </div>
                     <div class="col-md-3">
@@ -200,8 +253,13 @@ export class AddClient extends Component
                         <div className="">
                             <input className="form-control"
                                 type="text"
-                                name="Cpf" value={this.state.clientData.cpf}
-                                onChange={this.handlerChangeCpf.bind(this)} />
+                                name="Estado" value={this.state.clientData.estado}
+                                onChange={(event) => {
+                                    this.state.clientData.estado = event.target.value;
+                                    this.setState({ clientData: this.state.clientData });
+                                }}
+                                required
+                            />
                         </div>
                     </div>
                 </div >
@@ -213,9 +271,14 @@ export class AddClient extends Component
                             <input id="teste"
                                 className="form-control"
                                 type="text"
-                                name="Nome"
-                                value={this.state.clientData.nome}
-                                onChange={this.handlerChangeName.bind(this)} />
+                                name="Complemento"
+                                value={this.state.clientData.complemento}
+                                onChange={(event) => {
+                                    this.state.clientData.complemento = event.target.value;
+                                    this.setState({ clientData: this.state.clientData });
+                                }}
+
+                            />
                         </div>
                     </div>
                    
