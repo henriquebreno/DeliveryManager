@@ -1,14 +1,6 @@
 ﻿import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-export class Client {
-    constructor() {
-        this.cpf = "";
-        this.nome = "";
-        this.telefone = "";
-        this.id_cliente = 0;
-    }
-}
 
 export class FetchClient extends Component
 {
