@@ -40,7 +40,7 @@ namespace DeliveryManager.Controllers
                 return NotFound();
             }
 
-            return View(cardapio);
+            return Json(cardapio);
         }
 
         // GET: Cardapios/Create
@@ -53,7 +53,7 @@ namespace DeliveryManager.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Preco,Nome,Descricao,Url,Id_Cardapio")] Cardapio cardapio)
         {
             if (ModelState.IsValid)
@@ -62,7 +62,7 @@ namespace DeliveryManager.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(cardapio);
+            return Json(cardapio);
         }
 
         // GET: Cardapios/Edit/5
@@ -85,7 +85,7 @@ namespace DeliveryManager.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Preco,Nome,Descricao,Url,Id_Cardapio")] Cardapio cardapio)
         {
             if (id != cardapio.Id_Cardapio)

@@ -76,7 +76,7 @@ export class FetchCardapio extends Component
             <div>
                 <h1>Cardápio</h1> 
                 <p>
-                    <Link to={"/addclient"}>
+                    <Link to={"/addcardapio"}>
                         <button className="btn btn-primary" >Criar Comida</button>
                     </Link> 
                 </p>
