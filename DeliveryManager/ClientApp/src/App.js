@@ -19,6 +19,7 @@ export default class App extends Component {
         <Route path='/addclient' component={AddClient} />
         <Route path='/addcardapio' component={AddCardapio} />
         <Route path='/Clientes/Edit/:clientId' component={AddClient} />
+        <Route path='/Cardapios/Edit/:cardapioId' component={AddCardapio} />
       </Layout>
     );
   }

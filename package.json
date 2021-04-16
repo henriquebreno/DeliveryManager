@@ -12,6 +12,8 @@
     "bootstrap": "^5.0.0-beta2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
+    "react-easy-crop": "^3.3.2",
+    "react-modal": "^3.13.1",
     "react-scripts": "^4.0.3",
     "socket.io": "^4.0.0"
   }

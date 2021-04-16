@@ -1,5 +1,6 @@
 ﻿import React, { Component, useReducer,useRef } from 'react';
-import CameraIcon from '../img/camera-icon.png'
+import CameraIcon from '../img/camera-icon.png';
+import { Modal } from 'react-modal';
 
 export class Cardapio {
     constructor() {
@@ -15,28 +16,27 @@ export class AddCardapio extends Component
 {
     displayName = AddCardapio.name;
 
-    constructor(props)
-    {
-        super(props);     
-        this.state = { title: "", loading: true, cardapioData: new Cardapio };        
-        this.myRef = React.createRef();
+    constructor(props) {
+        super(props);
+        this.state = { title: "", loading: true, cardapioData: new Cardapio };
+        this.foodImageRef = React.createRef();
 
         var clientId = this.props.match.params["cardapioId"];
         if (clientId) {
             fetch('Cardapios/Details/' + clientId)
                 .then((response) => response.json())
                 .then((data) => {
-                    this.setState({ title: "Edit", loading: false, cardapioData: data });                    
+                    this.setState({ title: "Edit", loading: false, cardapioData: data });
                 })
-        } else
-        {
-            this.state = { title: "Create", loading: false, cardapioData: new Cardapio  };
+        } else {
+            this.state = { title: "Create", loading: false, cardapioData: new Cardapio };
         }
 
         this.handleSave = this.handleSave.bind(this);
         this.handleCancel = this.handleCancel.bind(this);
+        this.handleRef = this.handleRef.bind(this);
         this.handleImageChange = this.handleImageChange.bind(this);
-
+       
     }
 
 
@@ -51,27 +51,44 @@ export class AddCardapio extends Component
 
         // PUT request for Edit employee.  
         if (cardapioData.id_Cardapio) {
-            data.set("Id_Cardapio", cardapioData.id_Cliente)
-            fetch('Cardapios/Edit/' + cardapioData.id_Cliente, {
+            data.set("Url", cardapioData.url);
+            fetch('ImageAjax/Edit', {
                 method: 'PUT',
                 body: data,
             })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                data.set("Url", responseJson)
+                data.set("Id_Cardapio", cardapioData.id_Cardapio)
+                fetch('Cardapios/Edit/' + cardapioData.id_Cardapio, {
+                    method: 'PUT',
+                    body: data,
+                })
                 .then((response) => response.json())
                 .then((responseJson) => {
                     this.props.history.push("/fetchcardapio");
                 })
+            })
         }
 
         // POST request for Add employee.  
         else {
-            fetch('Cardapios/Create', {
+            fetch('ImageAjax/Create', {
                 method: 'POST',
                 body: data,
             })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                data.set("Url",responseJson)
+                fetch('Cardapios/Create', {
+                    method: 'POST',
+                    body: data,
+                })
                 .then((response) => response.json())
                 .then((responseJson) => {
                     this.props.history.push("/fetchcardapio");
                 })
+            })
         }            
 
     }
@@ -81,8 +98,15 @@ export class AddCardapio extends Component
         this.props.history.push("/fetchclient");   
     }  
 
-    handleImageChange(e) {
-        this.myRef.current.click();
+    handleRef(e,element) {
+        element.current.click();
+    }
+
+    handleImageChange(event) {
+
+        this.state.cardapioData.url = window.URL.createObjectURL(event.target.files[0]);
+        this.setState({ cardapioData: this.state.cardapioData });
+
     }
 
     RenderCreateForm()
@@ -149,14 +173,15 @@ export class AddCardapio extends Component
                         </div>
                         <div className="col-md-3">   
                             <br></br>
-                            <div class="" onClick={this.handleImageChange}> 
+                            <div  onClick={(event) => this.handleRef(event, this.foodImageRef)}> 
                                 <input
                                     type="file"
-                                    id="foodImage"
-                                    name="Image"
+                                    id="foodImageRef"
+                                    name="fileImage"
                                     style={{ display: "none" }}
-                                    ref={this.myRef}/>
-                                <img src={this.state.cardapioData.url} alt="camera icon image" />
+                                    ref={this.foodImageRef}
+                                    onChange={ this.handleImageChange}/>
+                                <img src={this.state.cardapioData.url} alt="camera icon image" width="200px" height="100px" />
                             </div>
                             <br></br>
                         </div>
@@ -170,6 +195,8 @@ export class AddCardapio extends Component
             </form >
         )  
     }
+
+
     render()
     {
         let contents = this.state.loading

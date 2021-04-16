@@ -26,15 +26,15 @@ export class FetchCardapio extends Component
         })
         .then((response) => response.json())
         .then((data) => {
-            this.setState({ cliente: data, loading: false });
+            this.setState({ cardapio: data, loading: false });
             this.props.history.push("/fetchcardapio");
         })
         
      } 
 
-    handlerEdit(clienteId)
+    handlerEdit(cardapioId)
     {
-        this.props.history.push("/Cardapios/Edit/" + clienteId);   
+        this.props.history.push("/Cardapios/Edit/" + cardapioId);   
     }
 
     renderClientTable(cardapio) {

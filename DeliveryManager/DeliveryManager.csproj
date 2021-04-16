@@ -42,10 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Ajax\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="ClientApp\src\img\camera-icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
