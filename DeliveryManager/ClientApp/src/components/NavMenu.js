@@ -2,7 +2,7 @@
 import { Link,NavLink } from 'react-router-dom';
 import { Glyphicon, Nav, Navbar, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import './NavMenu.css';
+import '../css/NavMenu.css';
 import Logo from '../img/logo-icon.png';
 import "@fontsource/port-lligat-sans";	
 import { Speedometer2, PersonLinesFill, List, HouseFill} from 'react-bootstrap-icons';

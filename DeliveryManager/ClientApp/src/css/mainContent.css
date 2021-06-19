@@ -1,0 +1,7 @@
+﻿body .app-container {
+    padding: 0px;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    padding-left: 180px;
+}
