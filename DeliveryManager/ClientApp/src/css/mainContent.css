@@ -5,3 +5,15 @@
     overflow-x: hidden;
     padding-left: 180px;
 }
+
+body {
+
+    padding:0px;
+}
+
+@media (max-width: 767px) {
+    body .app-container {
+        padding-left: 0;
+        padding-top: 0px;
+    }
+}

@@ -5,7 +5,11 @@ import { LinkContainer } from 'react-router-bootstrap';
 import '../css/NavMenu.css';
 import Logo from '../img/logo-icon.png';
 import "@fontsource/port-lligat-sans";	
-import { Speedometer2, PersonLinesFill, List, HouseFill} from 'react-bootstrap-icons';
+import { Speedometer2, PersonLinesFill, List, HouseFill, XLg } from 'react-bootstrap-icons';
+
+// get our fontawesome imports
+import { faTachometerAlt, faHome, faSitemap, faMapSigns, faMap } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 export class NavMenu extends Component {
   displayName = NavMenu.name
@@ -13,40 +17,40 @@ export class NavMenu extends Component {
 
 render() {
     return (
-		<aside class="app-sidebar" id="sidebar">
-			<div class="sidebar-header">
-				<a class="sidebar-brand" href="">
+		<aside className="app-sidebar" id="sidebar">
+            <div className="sidebar-header">
+                <a className="sidebar-brand" href="">
 					<img src={Logo} alt="app logo" />
 				</a>
 
 				<span className="logo-name">DeliveryManager</span>
-				<button type="button" class="sidebar-toggle"> <i class="fa fa-times"></i> </button>
+                <button type="button" className="sidebar-toggle"> <XLg className="fa" /></button>
 			</div>
-			<div class="sidebar-menu">
-				<ul class="sidebar-nav">
-					<li class="" >
+            <div className="sidebar-menu">
+                <ul className="sidebar-nav">
+                    <li className="" >
 						<NavLink to={'/dashboard'} activeClassName="active">
-							<div class="icon"> <Speedometer2 className="fa"/> </div>
-							<div class="title">Dashboard</div>
+                            <div className="icon"> <FontAwesomeIcon icon={faTachometerAlt} className="fa" /> </div>
+                            <div className="title">Dashboard</div>
 						</NavLink>						
 					</li>
-					<li class="">
+                    <li className="">
 						<NavLink to={'/'} exact activeClassName="active">
-							<div class="icon"> <HouseFill className="fa" /> </div>
-							<div class="title">Home</div>
+                            <div className="icon"> <FontAwesomeIcon icon={faHome} className="fa" /> </div>
+                            <div className="title">Home</div>
 						</NavLink>		
 					</li>
 
-					<li class="">
+                    <li className="">
 						<NavLink  to="/fetchclient" activeClassName="active">
-							<div class="icon"><PersonLinesFill className="fa" /> </div>							
-							<div class="title">Clientes</div>
+                            <div className="icon"> <FontAwesomeIcon icon={faSitemap} className="fa" />  </div>							
+                            <div className="title">Clientes</div>
 						</NavLink>						
 					</li>
 					<li className="">
 						<NavLink to="/fetchcardapio" activeClassName="active">
-							<div class="icon"> <List className="fa"/></div>
-							<div class="title">Cardápio</div>
+                            <div className="icon"> <FontAwesomeIcon icon={ faMap} className="fa" /> </div>
+                            <div className="title">Cardápio</div>
 						</NavLink>
 					</li>
 

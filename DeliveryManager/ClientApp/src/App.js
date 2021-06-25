@@ -6,6 +6,7 @@ import { FetchCardapio } from './components/FetchCardapio';
 import { FetchClient } from './components/FetchClient';
 import { AddClient } from './components/AddClient';
 import { AddCardapio } from './components/AddCardapio';
+import { DashBoard } from './components/DashBoard';
 
 export default class App extends Component {
   displayName = App.name
@@ -14,6 +15,7 @@ export default class App extends Component {
     return (
       <Layout>
         <Route exact path='/' component={Home} />
+        <Route path='/dashboard' component={DashBoard} />
         <Route path='/fetchclient' component={FetchClient} />
         <Route path='/fetchcardapio' component={FetchCardapio} />
         <Route path='/addclient' component={AddClient} />
