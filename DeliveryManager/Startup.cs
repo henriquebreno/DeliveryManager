@@ -1,8 +1,5 @@
-using DeliveryManager.Configuration;
-using DeliveryManager.Model;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
@@ -24,7 +21,7 @@ namespace DeliveryManager
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<Contexto>
+            services.AddDbContext<BaseRepository>
                 (optionsAction: options => options.UseSqlServer
                 (Configuration.GetConnectionString("DefaultConnection")));
 
