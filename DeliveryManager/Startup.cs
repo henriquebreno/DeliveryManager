@@ -1,3 +1,4 @@
+using DeliveryManager.Infra.Repositories.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -21,7 +22,7 @@ namespace DeliveryManager
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<BaseRepository>
+            services.AddDbContext<Contexto>
                 (optionsAction: options => options.UseSqlServer
                 (Configuration.GetConnectionString("DefaultConnection")));
 

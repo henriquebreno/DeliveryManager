@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using DeliveryManager.Domain.Interfaces;
 using DeliveryManager.Infra.Repositories.EF;
+using Microsoft.EntityFrameworkCore;
 
 namespace DeliveryManager.Infra.Repositories
 {
@@ -12,7 +13,7 @@ namespace DeliveryManager.Infra.Repositories
 
         public BaseRepository()
         {
-            _contexto = new Contexto();
+            //_contexto = new Contexto();
         }
         public void Add(TEntity obj)
         {
@@ -43,7 +44,7 @@ namespace DeliveryManager.Infra.Repositories
 
         public void Update(TEntity obj)
         {
-            _contexto.Entry(obj).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            _contexto.Entry(obj).State = EntityState.Modified;
         }
     }
 }
