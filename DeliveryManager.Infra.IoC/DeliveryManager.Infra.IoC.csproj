@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Ninject" Version="3.3.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DeliveryManager.Domain\DeliveryManager.Domain.csproj" />
+    <ProjectReference Include="..\DeliveryManager.Infra.Repositories\DeliveryManager.Infra.Repositories.csproj" />
+  </ItemGroup>
+
+</Project>

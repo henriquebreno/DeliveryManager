@@ -1,3 +1,4 @@
+using DeliveryManager.Infra.IoC;
 using DeliveryManager.Infra.Repositories.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -33,6 +34,9 @@ namespace DeliveryManager
             {
                 configuration.RootPath = "ClientApp/build";
             });
+
+            services.AddServiceDependency();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

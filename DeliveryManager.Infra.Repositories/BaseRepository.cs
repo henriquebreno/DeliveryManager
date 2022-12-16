@@ -9,11 +9,13 @@ namespace DeliveryManager.Infra.Repositories
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
     {
-        private Contexto _contexto;
-
-        public BaseRepository()
+        protected DbContext _contexto;
+        protected DbSet<TEntity> dbSet;
+        
+        public BaseRepository(DbContext context)
         {
-            //_contexto = new Contexto();
+            _contexto = context;
+            dbSet = context.Set<TEntity>();
         }
         public void Add(TEntity obj)
         {
