@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DeliveryManager.Infra.Repositories
 {
-    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class
+    public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class , IAggregateRoot
     {
         protected DbContext _contexto;
         protected DbSet<TEntity> dbSet;

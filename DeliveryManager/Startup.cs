@@ -23,7 +23,7 @@ namespace DeliveryManager
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<Contexto>
+            services.AddDbContext<Context>
                 (optionsAction: options => options.UseSqlServer
                 (Configuration.GetConnectionString("DefaultConnection")));
 

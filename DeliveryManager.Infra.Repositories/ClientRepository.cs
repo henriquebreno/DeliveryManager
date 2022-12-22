@@ -5,14 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-
 namespace DeliveryManager.Infra.Repositories
 {
-    public class CardapioRepository: BaseRepository<Cardapio>,ICardapioRepository
+    public class ClientRepository : BaseRepository<Client>, IClientRepository 
     {
-        public CardapioRepository(DbContext context) : base(context)
+        public ClientRepository(DbContext context) : base(context)
         {
-                
         }
     }
 }

@@ -5,12 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace DeliveryManager.Infra.Repositories
 {
-    public class ClienteRepository : BaseRepository<Cliente>, IClienteRepository
+    public class FoodRepository: BaseRepository<Food>,IFoodRepository
     {
-        public ClienteRepository(DbContext context) : base(context)
+        public FoodRepository(DbContext context) : base(context)
         {
+                
         }
     }
 }

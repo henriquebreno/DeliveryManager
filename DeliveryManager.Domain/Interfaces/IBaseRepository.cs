@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DeliveryManager.Domain.Interfaces
 {
-    public  interface IBaseRepository<TEntity> where TEntity : class
+    public  interface IBaseRepository<TEntity> where TEntity : class,IAggregateRoot
     {
         void Add(TEntity obj);
 

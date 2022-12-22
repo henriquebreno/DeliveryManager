@@ -3,9 +3,9 @@ using System;
 
 namespace DeliveryManager.Application
 {
-    public class CardapioApplication
+    public class OrderApplication
     {
-        public void Register(Cardapio cardapio) 
+        public void SellOrder() 
         { 
             
         }

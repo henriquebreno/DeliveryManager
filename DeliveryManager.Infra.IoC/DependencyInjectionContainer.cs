@@ -12,8 +12,8 @@ namespace DeliveryManager.Infra.IoC
     {
         public static void AddServiceDependency(this IServiceCollection services) 
         {
-            services.AddScoped<ICardapioRepository, CardapioRepository>();
-            services.AddScoped<IClienteRepository, ClienteRepository>();
+            services.AddScoped<IFoodRepository, FoodRepository>();
+            services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped(typeof(IBaseRepository<>),typeof(BaseRepository<>));
         }

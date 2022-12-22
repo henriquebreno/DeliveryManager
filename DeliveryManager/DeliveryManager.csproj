@@ -48,10 +48,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\DeliveryManager.Infra.IoC\DeliveryManager.Infra.IoC.csproj" />
   </ItemGroup>
 

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DeliveryManager.Domain.Interfaces
 {
-    public interface IClienteRepository : IBaseRepository<Cliente>
+    public interface IClientRepository : IBaseRepository<Client>, IAggregateRoot
     {
 
     }
