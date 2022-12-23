@@ -1,4 +1,6 @@
-﻿using DeliveryManager.Domain.Interfaces;
+﻿using DeliveryManager.Application.Commands;
+using DeliveryManager.Application.Interfaces;
+using DeliveryManager.Domain.Interfaces;
 using DeliveryManager.Infra.Repositories;
 using DeliveryManager.Infra.Repositories.EF;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,7 +17,9 @@ namespace DeliveryManager.Infra.IoC
             services.AddScoped<IFoodRepository, FoodRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<IClientApplication, ClientApplication>();
             services.AddScoped(typeof(IBaseRepository<>),typeof(BaseRepository<>));
+            services.AddScoped<Context>();
         }
     }
 }

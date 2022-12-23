@@ -9,22 +9,22 @@ namespace DeliveryManager.Infra.Repositories
 {
     public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : class , IAggregateRoot
     {
-        protected DbContext _contexto;
+        protected Context _contexto;
         protected DbSet<TEntity> dbSet;
         
-        public BaseRepository(DbContext context)
+        public BaseRepository(Context context)
         {
             _contexto = context;
-            dbSet = context.Set<TEntity>();
+            dbSet = _contexto.Set<TEntity>();
         }
         public void Add(TEntity obj)
         {
-            _contexto.Set<TEntity>().Add(obj);
+            dbSet.Add(obj);
         }
 
         public void Delete(TEntity obj)
         {
-            _contexto.Set<TEntity>().Remove(obj);
+            dbSet.Remove(obj);
 
         }
 
@@ -36,12 +36,12 @@ namespace DeliveryManager.Infra.Repositories
 
         public IEnumerable<TEntity> Get()
         {
-            return _contexto.Set<TEntity>().ToList();
+            return dbSet.ToList();
         }
 
         public TEntity GetById(int id)
         {
-            return _contexto.Set<TEntity>().Find(id);
+            return dbSet.Find(id);
         }
 
         public void Update(TEntity obj)

@@ -8,9 +8,9 @@ namespace DeliveryManager.Infra.Repositories.EF
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private DbContext _dbContext;
+        private Context _dbContext;
 
-        public UnitOfWork(DbContext context) 
+        public UnitOfWork(Context context) 
         {
             _dbContext = context;
         }

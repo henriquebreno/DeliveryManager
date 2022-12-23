@@ -13,6 +13,7 @@ namespace DeliveryManager.Infra.Repositories.EF
             
         }
 
+
         public DbSet<Food> Foods { get; set; }
 
         public DbSet<Client> Clients { get; set; }
