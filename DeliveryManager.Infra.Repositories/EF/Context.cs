@@ -1,7 +1,10 @@
 ﻿using DeliveryManager.Domain.Entities;
+using DeliveryManager.Infra.Repositories.Configurations;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DeliveryManager.Infra.Repositories.EF
@@ -13,11 +16,26 @@ namespace DeliveryManager.Infra.Repositories.EF
             
         }
 
+        public IConfiguration Configuration { get; }
 
-        public DbSet<Food> Foods { get; set; }
+        public DbSet<Food> Food { get; set; }
 
-        public DbSet<Client> Clients { get; set; }
+        public DbSet<Client> Client { get; set; }
 
-        public DbSet<Order> Orders { get; set; }
+        public DbSet<Order> Order { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new ClientConfiguration());
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+
+            optionsBuilder.UseLazyLoadingProxies();
+      
+            
+
+        }
     }
 }

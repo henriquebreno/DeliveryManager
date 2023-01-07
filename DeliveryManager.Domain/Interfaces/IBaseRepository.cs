@@ -10,8 +10,8 @@ namespace DeliveryManager.Domain.Interfaces
 
         void Delete(TEntity obj);
 
-        void Delete(int id);
-        TEntity GetById(int id);
+        void Delete(long id);
+        TEntity GetById(long id);
 
         IEnumerable<TEntity> Get();
 

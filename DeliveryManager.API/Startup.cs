@@ -1,4 +1,6 @@
-﻿using DeliveryManager.Infra.IoC;
+﻿using AutoMapper;
+using DeliveryManager.API.AutoMapper;
+using DeliveryManager.Infra.IoC;
 using DeliveryManager.Infra.Repositories.EF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -37,10 +39,10 @@ namespace DeliveryManager.API
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddSwaggerGen(options =>
             {
-                options.SwaggerDoc("v2", new Swashbuckle.AspNetCore.Swagger.Info
+                options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info
                 {
                     Title = "Place Info Service API",
-                    Version = "v2",
+                    Version = "v1",
                     Description = "Sample service for Learner",
                 });
             });
@@ -52,6 +54,7 @@ namespace DeliveryManager.API
             });
 
             services.AddServiceDependency();
+            services.AddAutoMapper(typeof(MappingProfile));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,7 +63,10 @@ namespace DeliveryManager.API
             if (env.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI(options => options.SwaggerEndpoint("/swagger/v2/swagger.json", "PlaceInfo Services"));
+                app.UseSwaggerUI(options => {
+                    options.SwaggerEndpoint("/swagger/v1/swagger.json", "PlaceInfo Services");
+                    options.DefaultModelsExpandDepth(-1); // Disable swagger schemas at bottom                
+                });
                 app.UseDeveloperExceptionPage();
             }
             else

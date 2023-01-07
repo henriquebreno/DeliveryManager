@@ -28,7 +28,7 @@ namespace DeliveryManager.Infra.Repositories
 
         }
 
-        public void Delete(int id)
+        public void Delete(long id)
         {
             var obj = GetById(id);
             Delete(obj);
@@ -39,13 +39,14 @@ namespace DeliveryManager.Infra.Repositories
             return dbSet.ToList();
         }
 
-        public TEntity GetById(int id)
+        public TEntity GetById(long id)
         {
             return dbSet.Find(id);
         }
 
         public void Update(TEntity obj)
         {
+            dbSet.Attach(obj);
             _contexto.Entry(obj).State = EntityState.Modified;
         }
     }

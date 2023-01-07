@@ -1,13 +1,15 @@
 ﻿using DeliveryManager.Domain.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace DeliveryManager.Domain.Entities
 {
-    public class Food : IAggregateRoot
+    public class Food :Entity, IAggregateRoot
     {
-       
+
+        [Column(TypeName = "decimal(18,2)")]
         public decimal Price { get; set; }
 
         public string Name { get; set; }
@@ -16,6 +18,9 @@ namespace DeliveryManager.Domain.Entities
 
         public string Url { get; set; }
 
-        public int FoodId { get; set; }
+        public override void Validate()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

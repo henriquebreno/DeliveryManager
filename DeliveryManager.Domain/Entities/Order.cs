@@ -5,10 +5,12 @@ using System.Text;
 
 namespace DeliveryManager.Domain.Entities
 {
-    public class Order : IAggregateRoot
+    public class Order :Entity, IAggregateRoot
     {
-        public int OrderId { get; set; }
 
-
+        public override void Validate()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

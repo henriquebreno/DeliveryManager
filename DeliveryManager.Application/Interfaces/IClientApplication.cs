@@ -8,10 +8,14 @@ namespace DeliveryManager.Application.Interfaces
 {
     public interface IClientApplication
     {
-        void CreateUser(ClientDto client);
+        void CreateClient(ClientDto client);
 
-        ClientDto GetClient(int id);
+        ClientDto GetClient(long id);
 
         List<ClientDto> GetAll();
+
+        void DeleteClient(long id);
+
+        void UpdateClient(ClientDto client);
     }
 }

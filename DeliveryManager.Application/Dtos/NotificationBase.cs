@@ -4,8 +4,8 @@ using System.Text;
 
 namespace DeliveryManager.Application.Dtos
 {
-    abstract class NotificationBase
+    public abstract class NotificationBase
     {
-        public string Notification;
+        public string Notification { get; internal set; }
     }
 }
