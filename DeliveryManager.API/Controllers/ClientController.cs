@@ -1,4 +1,6 @@
 ﻿using DeliveryManager.Application.Dtos;
+using DeliveryManager.Application.Dtos.Address;
+using DeliveryManager.Application.Dtos.Client;
 using DeliveryManager.Application.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -36,13 +38,13 @@ namespace DeliveryManager.API.Controllers
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public IActionResult GetClientById(int id)
+        [HttpGet("{clientId}")]
+        public IActionResult GetClientById(int clientId)
         {
             var client = new ClientDto();
             try
             {
-                client = _clientApplication.GetClient(id);
+                client = _clientApplication.GetClient(clientId);
                 return Ok(client);
             }
             catch (Exception ex)
@@ -53,7 +55,7 @@ namespace DeliveryManager.API.Controllers
 
         // POST api/values
         [HttpPost]
-        public IActionResult CreateClient([FromBody] ClientDto client)
+        public IActionResult CreateClient([FromBody] CreateClientDto client)
         {
             try
             {
@@ -67,8 +69,8 @@ namespace DeliveryManager.API.Controllers
         }
 
         // PUT api/values/5
-        [HttpPut("{id}")]
-        public IActionResult UpdateClient([FromBody] ClientDto client)
+        [HttpPut("{clientId}")]
+        public IActionResult UpdateClient([FromBody] UpdateClientDto client)
         {
             try
             {
@@ -82,12 +84,55 @@ namespace DeliveryManager.API.Controllers
         }
 
         // DELETE api/values/5
-        [HttpDelete("{id}")]
+        [HttpDelete("{clientId}")]
         public IActionResult DeleteClient(long id)
         {           
             try
             {
                 _clientApplication.DeleteClient(id);
+                return StatusCode((int)HttpStatusCode.Created);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet("{clientId}/address")]
+        public IActionResult GetClientAddresses(int clientId)
+        {
+            var clientAddresses = new List<ClientAddressDto>();
+            try
+            {
+                clientAddresses = _clientApplication.GetClientAddresses(clientId);
+                return Ok(clientAddresses);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, clientAddresses);
+            }
+        }
+
+        [HttpPost("{clientId}/address")]
+        public IActionResult CreateClientAddress([FromBody] ClientAddressDto client,int clientId)
+        {
+            try
+            {
+                _clientApplication.CreateClientAddress(client, clientId);
+                return StatusCode((int)HttpStatusCode.Created);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPut("{clientId}/address/{addressId}")]
+        public IActionResult ChangeClientAddress([FromBody] ClientAddressDto client, int clientId, int addressId )
+        {
+            try
+            {
+                _clientApplication.ChangeClientAddress(client, clientId, addressId);
                 return StatusCode((int)HttpStatusCode.Created);
             }
             catch (Exception ex)

@@ -33,8 +33,9 @@ namespace DeliveryManager.Infra.Repositories.EF
         {
 
             optionsBuilder.UseLazyLoadingProxies();
-      
-            
+            optionsBuilder.EnableSensitiveDataLogging();
+
+
 
         }
     }

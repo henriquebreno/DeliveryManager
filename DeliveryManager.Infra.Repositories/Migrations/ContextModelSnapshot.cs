@@ -31,7 +31,11 @@ namespace DeliveryManager.Infra.Repositories.Migrations
 
                     b.Property<string>("Cpf");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Email");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
 
                     b.HasKey("Id");
 

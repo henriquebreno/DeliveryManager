@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using DeliveryManager.API.AutoMapper;
+using DeliveryManager.Application.Dtos;
 using DeliveryManager.Infra.IoC;
 using DeliveryManager.Infra.Repositories.EF;
+using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -37,6 +39,8 @@ namespace DeliveryManager.API
                (Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            services.AddValidatorsFromAssemblyContaining<Startup>();
+
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new Swashbuckle.AspNetCore.Swagger.Info

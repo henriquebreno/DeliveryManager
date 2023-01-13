@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
 using DeliveryManager.Application.Dtos;
+using DeliveryManager.Application.Dtos.Address;
+using DeliveryManager.Application.Dtos.Client;
 using DeliveryManager.Domain.Entities;
 using System;
-using System.Collections.Generic;
+
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,10 +16,12 @@ namespace DeliveryManager.API.AutoMapper
         {
             CreateMap<Client, ClientDto>()
                 .ForMember(dest => dest.ClientId, opt => opt.MapFrom(src => src.Id))
-                .ReverseMap().ForMember(dest => dest.Id, opt=>opt.MapFrom(src => src.ClientId));
+                .ReverseMap().ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ClientId));
+
 
             CreateMap<ClientAddress, ClientAddressDto>()
-                .ReverseMap();
+                .ForMember(dest => dest.AddressId, opt => opt.MapFrom(src => src.Id))
+                .ReverseMap().ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.AddressId));
 
 
         }

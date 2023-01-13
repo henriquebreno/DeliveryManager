@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DeliveryManager.Infra.Repositories.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20230106053705_initTest")]
-    partial class initTest
+    [Migration("20230111231820_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -33,7 +33,11 @@ namespace DeliveryManager.Infra.Repositories.Migrations
 
                     b.Property<string>("Cpf");
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Email");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<string>("LastName");
 
                     b.HasKey("Id");
 

@@ -13,7 +13,7 @@ namespace DeliveryManager.Domain.Entities
         public String Country { get;  set; }
         public String ZipCode { get;  set; }
 
-        public virtual Client Client { get; set; }
+        public virtual Client Client { get;  set; }
 
 
         public ClientAddress() { }
@@ -25,6 +25,12 @@ namespace DeliveryManager.Domain.Entities
             State = state;
             Country = country;
             ZipCode = zipcode;
+        }
+
+
+        public ClientAddress(Client client)
+        {
+            this.Client = client;
         }
 
         public override void Validate()
