@@ -5,7 +5,7 @@ using System.Text;
 
 namespace DeliveryManager.Domain.Interfaces
 {
-    public interface IFoodRepository : IBaseRepository<Food>, IAggregateRoot
+    public interface IProductRepository : IBaseRepository<Product>, IAggregateRoot
     {
     }
 }

@@ -9,11 +9,12 @@ using System.Text;
 
 namespace DeliveryManager.Infra.Repositories
 {
-    public class FoodRepository: BaseRepository<Food>,IFoodRepository
+    public class ProductRepository: BaseRepository<Product>,IProductRepository
     {
-        public FoodRepository(Context context) : base(context)
+        public ProductRepository(Context context) : base(context)
         {
-                
+            
+
         }
     }
 }

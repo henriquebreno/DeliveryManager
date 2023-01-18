@@ -18,7 +18,7 @@ namespace DeliveryManager.Infra.Repositories.EF
 
         public IConfiguration Configuration { get; }
 
-        public DbSet<Food> Food { get; set; }
+        public DbSet<Product> Product { get; set; }
 
         public DbSet<Client> Client { get; set; }
 
@@ -27,12 +27,13 @@ namespace DeliveryManager.Infra.Repositories.EF
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ClientConfiguration());
+            modelBuilder.ApplyConfiguration(new ProductConfiguration());
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-            optionsBuilder.UseLazyLoadingProxies();
+
             optionsBuilder.EnableSensitiveDataLogging();
 
 

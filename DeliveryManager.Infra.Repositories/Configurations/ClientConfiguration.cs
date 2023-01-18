@@ -12,12 +12,23 @@ namespace DeliveryManager.Infra.Repositories.Configurations
     {
         public void Configure(EntityTypeBuilder<Domain.Entities.Client> builder)
         {
+
+
             builder
             .HasMany(e => e.ClientAddress)
-            .WithOne(c=>c.Client)
+            .WithOne(c => c.Client)
+            .IsRequired()
             .OnDelete(DeleteBehavior.Cascade);
 
-       
+            //builder
+            //.Property(b => b.ClientAddress)
+            //.HasField("_clientAddress");
+
+            //builder.Metadata
+            //.FindNavigation("ClientAddress")
+            //.SetPropertyAccessMode(PropertyAccessMode.Field);
+
+
         }
     }
 }

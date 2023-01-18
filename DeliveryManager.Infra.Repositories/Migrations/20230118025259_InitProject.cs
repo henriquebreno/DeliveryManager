@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DeliveryManager.Infra.Repositories.Migrations
 {
-    public partial class init : Migration
+    public partial class InitProject : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -26,22 +26,6 @@ namespace DeliveryManager.Infra.Repositories.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Food",
-                columns: table => new
-                {
-                    Id = table.Column<long>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Name = table.Column<string>(nullable: true),
-                    Description = table.Column<string>(nullable: true),
-                    Url = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Food", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Order",
                 columns: table => new
                 {
@@ -51,6 +35,24 @@ namespace DeliveryManager.Infra.Repositories.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Order", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Product",
+                columns: table => new
+                {
+                    Id = table.Column<long>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Amount = table.Column<decimal>(nullable: false),
+                    CurrencyName = table.Column<string>(nullable: true),
+                    CurrencySymbol = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    Url = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -64,7 +66,7 @@ namespace DeliveryManager.Infra.Repositories.Migrations
                     State = table.Column<string>(nullable: true),
                     Country = table.Column<string>(nullable: true),
                     ZipCode = table.Column<string>(nullable: true),
-                    ClientId = table.Column<long>(nullable: true)
+                    ClientId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -89,10 +91,10 @@ namespace DeliveryManager.Infra.Repositories.Migrations
                 name: "ClientAddress");
 
             migrationBuilder.DropTable(
-                name: "Food");
+                name: "Order");
 
             migrationBuilder.DropTable(
-                name: "Order");
+                name: "Product");
 
             migrationBuilder.DropTable(
                 name: "Client");

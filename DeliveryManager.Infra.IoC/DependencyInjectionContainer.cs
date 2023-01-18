@@ -14,12 +14,14 @@ namespace DeliveryManager.Infra.IoC
     {
         public static void AddServiceDependency(this IServiceCollection services) 
         {
-            services.AddScoped<IFoodRepository, FoodRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IClientApplication, ClientApplication>();
             services.AddScoped(typeof(IBaseRepository<>),typeof(BaseRepository<>));
             services.AddScoped<Context>();
+            services.AddScoped<IProductApplication, ProductApplication>();
+
         }
     }
 }

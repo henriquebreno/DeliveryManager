@@ -50,7 +50,8 @@ namespace DeliveryManager.Infra.Repositories.Migrations
 
                     b.Property<string>("City");
 
-                    b.Property<long?>("ClientId");
+                    b.Property<long?>("ClientId")
+                        .IsRequired();
 
                     b.Property<string>("Country");
 
@@ -67,26 +68,6 @@ namespace DeliveryManager.Infra.Repositories.Migrations
                     b.ToTable("ClientAddress");
                 });
 
-            modelBuilder.Entity("DeliveryManager.Domain.Entities.Food", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Description");
-
-                    b.Property<string>("Name");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("Url");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Food");
-                });
-
             modelBuilder.Entity("DeliveryManager.Domain.Entities.Order", b =>
                 {
                     b.Property<long>("Id")
@@ -98,12 +79,69 @@ namespace DeliveryManager.Infra.Repositories.Migrations
                     b.ToTable("Order");
                 });
 
+            modelBuilder.Entity("DeliveryManager.Domain.Entities.Product", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Url");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Product");
+                });
+
             modelBuilder.Entity("DeliveryManager.Domain.Entities.ClientAddress", b =>
                 {
                     b.HasOne("DeliveryManager.Domain.Entities.Client", "Client")
                         .WithMany("ClientAddress")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DeliveryManager.Domain.Entities.Product", b =>
+                {
+                    b.OwnsOne("DeliveryManager.Domain.ValueObject.Money", "Price", b1 =>
+                        {
+                            b1.Property<long?>("ProductId")
+                                .ValueGeneratedOnAdd()
+                                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                            b1.Property<decimal>("Amount")
+                                .HasColumnName("Amount");
+
+                            b1.ToTable("Product");
+
+                            b1.HasOne("DeliveryManager.Domain.Entities.Product")
+                                .WithOne("Price")
+                                .HasForeignKey("DeliveryManager.Domain.ValueObject.Money", "ProductId")
+                                .OnDelete(DeleteBehavior.Cascade);
+
+                            b1.OwnsOne("DeliveryManager.Domain.ValueObject.Currency", "Currency", b2 =>
+                                {
+                                    b2.Property<long?>("MoneyProductId")
+                                        .ValueGeneratedOnAdd()
+                                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                                    b2.Property<string>("Name")
+                                        .HasColumnName("CurrencyName");
+
+                                    b2.Property<string>("Symbol")
+                                        .HasColumnName("CurrencySymbol");
+
+                                    b2.ToTable("Product");
+
+                                    b2.HasOne("DeliveryManager.Domain.ValueObject.Money")
+                                        .WithOne("Currency")
+                                        .HasForeignKey("DeliveryManager.Domain.ValueObject.Currency", "MoneyProductId")
+                                        .OnDelete(DeleteBehavior.Cascade);
+                                });
+                        });
                 });
 #pragma warning restore 612, 618
         }

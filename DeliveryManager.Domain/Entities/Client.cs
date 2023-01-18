@@ -10,7 +10,6 @@ namespace DeliveryManager.Domain.Entities
 {
     public class Client : Entity, IAggregateRoot
     {
-
         public string Email { get; set; }
         public string Cpf { get; set; }
         public string FirstName { get; set; }
@@ -18,22 +17,30 @@ namespace DeliveryManager.Domain.Entities
         public string Cellphone { get; set; }
         public string BirthDate { get; set; }
 
-        private readonly List<ClientAddress> _clientAddress;
-
-        public virtual IReadOnlyList<ClientAddress> ClientAddress => _clientAddress;
+        public ICollection<ClientAddress> ClientAddress { get; set; }
 
         public override void Validate()
         {
             throw new NotImplementedException();
         }
 
+        public Client(string email,string cpf,string firstName,string lastName,string cellphone,string birthDate)
+        {
+            Email = email;
+            Cpf = cpf;
+            FirstName = firstName;
+            LastName = lastName;
+            Cellphone = cellphone;
+            BirthDate = birthDate;
+        }
 
-        public void SetAddress(ClientAddress clientAddress) 
+        public Client() { }
+
+        public void AddAddressItem(ClientAddress clientAddress) 
         {
             if (clientAddress != null) 
             {
-                clientAddress.Client = this;
-                _clientAddress.Add(clientAddress);
+                this.ClientAddress.Add(clientAddress);
             }
                 
         }
@@ -42,7 +49,7 @@ namespace DeliveryManager.Domain.Entities
         {
             if (clientAddress != null)
             {
-                foreach (var address in _clientAddress) 
+                foreach (var address in this.ClientAddress) 
                 {
                     if (address.Id == clientAddress.Id) 
                     {
@@ -56,11 +63,17 @@ namespace DeliveryManager.Domain.Entities
             }
 
         }
-        public Client() 
+        public void RemoveAddress(long clientAddressId)
         {
-           this._clientAddress = new List<ClientAddress>();
+
+            var clientAddress = ClientAddress.FirstOrDefault(client => client.Id == clientAddressId);
+            if (clientAddress != null)
+            {
+                ClientAddress.Remove(clientAddress);
+            }
+
         }
 
-       
+
     }
 }

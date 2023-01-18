@@ -7,7 +7,7 @@ namespace DeliveryManager.Application.Dtos.Client
 {
     public class UpdateClientDto : ClientDto
     {
-        [Required(ErrorMessage = "Id field is required")]
+        [Required(ErrorMessage = "ClientId field is required")]
         public override long ClientId { get; set; }
     }
 }

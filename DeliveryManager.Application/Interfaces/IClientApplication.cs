@@ -25,5 +25,8 @@ namespace DeliveryManager.Application.Interfaces
         void CreateClientAddress(ClientAddressDto client,long clientId);
 
         void ChangeClientAddress(ClientAddressDto client, long clientId,long addressId);
+
+        void DeleteClientAddress(long clientId,long addressId);
+
     }
 }

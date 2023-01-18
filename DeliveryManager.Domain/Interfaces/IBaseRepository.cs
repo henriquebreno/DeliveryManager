@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace DeliveryManager.Domain.Interfaces
 {
-    public  interface IBaseRepository<TEntity> where TEntity : class,IAggregateRoot
+    public interface IBaseRepository<TEntity> where TEntity : class, IAggregateRoot
     {
         void Add(TEntity obj);
 
@@ -16,5 +18,7 @@ namespace DeliveryManager.Domain.Interfaces
         IEnumerable<TEntity> Get();
 
         void Update(TEntity obj);
+
+        IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includes);
     }
 }

@@ -2,6 +2,7 @@
 using DeliveryManager.Application.Dtos;
 using DeliveryManager.Application.Dtos.Address;
 using DeliveryManager.Application.Dtos.Client;
+using DeliveryManager.Application.Dtos.Product;
 using DeliveryManager.Domain.Entities;
 using System;
 
@@ -23,6 +24,10 @@ namespace DeliveryManager.API.AutoMapper
                 .ForMember(dest => dest.AddressId, opt => opt.MapFrom(src => src.Id))
                 .ReverseMap().ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.AddressId));
 
+
+            CreateMap<Product, ProductDto>()
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id))
+                .ReverseMap().ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ProductId));
 
         }
     }

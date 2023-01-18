@@ -85,11 +85,11 @@ namespace DeliveryManager.API.Controllers
 
         // DELETE api/values/5
         [HttpDelete("{clientId}")]
-        public IActionResult DeleteClient(long id)
+        public IActionResult DeleteClient(long clientId)
         {           
             try
             {
-                _clientApplication.DeleteClient(id);
+                _clientApplication.DeleteClient(clientId);
                 return StatusCode((int)HttpStatusCode.Created);
             }
             catch (Exception ex)
@@ -114,7 +114,7 @@ namespace DeliveryManager.API.Controllers
         }
 
         [HttpPost("{clientId}/address")]
-        public IActionResult CreateClientAddress([FromBody] ClientAddressDto client,int clientId)
+        public IActionResult CreateClientAddress([FromBody] CreateClientAddressDto client,int clientId)
         {
             try
             {
@@ -128,11 +128,26 @@ namespace DeliveryManager.API.Controllers
         }
 
         [HttpPut("{clientId}/address/{addressId}")]
-        public IActionResult ChangeClientAddress([FromBody] ClientAddressDto client, int clientId, int addressId )
+        public IActionResult ChangeClientAddress([FromBody] UpdateClientAddressDto client, int clientId, int addressId )
         {
             try
             {
                 _clientApplication.ChangeClientAddress(client, clientId, addressId);
+                return StatusCode((int)HttpStatusCode.Created);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
+
+        // DELETE api/values/5
+        [HttpDelete("{clientId}/address/{addressId}")]
+        public IActionResult DeleteClientAddress(long clientId,long addressId)
+        {
+            try
+            {
+                _clientApplication.DeleteClientAddress(clientId, addressId);
                 return StatusCode((int)HttpStatusCode.Created);
             }
             catch (Exception ex)
