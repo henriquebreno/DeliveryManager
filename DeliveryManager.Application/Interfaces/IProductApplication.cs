@@ -15,6 +15,6 @@ namespace DeliveryManager.Application.Interfaces
 
         void DeleteClient(long productId);
 
-        void UpdateClient(ProductDto productDto);
+        void UpdateClient(ProductDto productDto, long productId);
     }
 }

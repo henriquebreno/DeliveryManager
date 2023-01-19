@@ -10,7 +10,7 @@ namespace DeliveryManager.Domain.Entities
     public class Product :Entity, IAggregateRoot
     {
 
-		protected Product()
+		public Product()
 		{
 		}
 
@@ -35,5 +35,17 @@ namespace DeliveryManager.Domain.Entities
         {
             throw new NotImplementedException();
         }
+
+        public void UpdateProduct(Product product) 
+        {
+            Description = product.Description;
+            Name = product.Name;
+            Url = product.Url;
+            Price = new Money(
+                new Currency(
+                    product.Price.Currency.Name, product.Price.Currency.Symbol),
+                product.Price.Amount);
+        }
+
     }
 }

@@ -29,6 +29,10 @@ namespace DeliveryManager.API.AutoMapper
                 .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id))
                 .ReverseMap().ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ProductId));
 
+            CreateMap<Product, UpdateProductDto>()
+                .ForMember(dest => dest.ProductId, opt => opt.MapFrom(src => src.Id))
+                .ReverseMap().ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.ProductId));
+
         }
     }
 }

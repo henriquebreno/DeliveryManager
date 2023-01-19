@@ -37,7 +37,7 @@ namespace DeliveryManager.API.Controllers
         }
 
         // GET api/<ProductController>/5
-        [HttpGet("{id}")]
+        [HttpGet("{productId}")]
         public IActionResult GetProductById(long productId)
         {
             try
@@ -53,7 +53,7 @@ namespace DeliveryManager.API.Controllers
 
         // POST api/<ProductController>
         [HttpPost]
-        public IActionResult CreateProduct([FromBody] ProductDto product)
+        public IActionResult CreateProduct([FromBody] CreateProductDto product)
         {
             try
             {
@@ -67,15 +67,34 @@ namespace DeliveryManager.API.Controllers
         }
 
         // PUT api/<ProductController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPut("{productId}")]
+        public IActionResult ChangeProduct(long productId, [FromBody] UpdateProductDto updateProduct)
         {
+            try
+            {
+                _productApplication.UpdateClient(updateProduct, productId);
+                return StatusCode((int)HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+
         }
 
         // DELETE api/<ProductController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        [HttpDelete("{productId}")]
+        public IActionResult RemoveProduct(long productId)
         {
+            try
+            {
+                _productApplication.DeleteClient(productId);
+                return StatusCode((int)HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
         }
     }
 }

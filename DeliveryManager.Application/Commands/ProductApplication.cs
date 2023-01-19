@@ -3,6 +3,7 @@ using DeliveryManager.Application.Dtos.Product;
 using DeliveryManager.Application.Interfaces;
 using DeliveryManager.Domain.Entities;
 using DeliveryManager.Domain.Interfaces;
+using DeliveryManager.Domain.ValueObject;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -23,9 +24,15 @@ namespace DeliveryManager.Application.Commands
 
         public void CreateProduct(ProductDto productDto)
         {
-            var client = _mapper.Map<ProductDto, Product>(productDto);
+            var product = new Product
+                (new Domain.ValueObject.Money(
+                    new Domain.ValueObject.Currency(),productDto.Price.Amount), 
+                    productDto.Name, 
+                    productDto.Description, 
+                    productDto.Url
+                );
 
-            _productRepository.Add(client);
+            _productRepository.Add(product);
             _unitOfWork.Commit();
         }
 
@@ -53,10 +60,25 @@ namespace DeliveryManager.Application.Commands
             _unitOfWork.Commit();
         }
 
-        public void UpdateClient(ProductDto productDto)
+        public void UpdateClient(ProductDto productDto, long productId)
         {
-            var client = _mapper.Map<ProductDto, Product>(productDto);
-            _productRepository.Update(client);
+            var product = _productRepository.GetById(productId);
+            product.UpdateProduct(new Product()
+            {
+                Description = productDto.Description,
+                Name = productDto.Name,
+                Url = product.Url,
+                Price = new Money(
+                    new Currency(
+                        product.Price.Currency.Name, productDto.Price.Currency.Symbol),
+                        productDto.Price.Amount
+                        )
+            });
+       
+            
+               
+           
+            _productRepository.Update(product);
             _unitOfWork.Commit();
         }
     }
