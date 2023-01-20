@@ -13,8 +13,8 @@ namespace DeliveryManager.Application.Interfaces
 
         ProductDto GetProduct(long productId);
 
-        void DeleteClient(long productId);
+        void DeleteProduct(long productId);
 
-        void UpdateClient(ProductDto productDto, long productId);
+        void UpdateProduct(ProductDto productDto, long productId);
     }
 }

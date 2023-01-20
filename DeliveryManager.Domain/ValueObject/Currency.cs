@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DeliveryManager.Domain.ValueObject
@@ -71,5 +72,11 @@ namespace DeliveryManager.Domain.ValueObject
         public static Currency Euro => new Currency("EUR", "€");
         public static Currency CanadianDollar => new Currency("CAD", "CA$");
         public static Currency USDollar => new Currency("USD", "US$");
+
+        public static bool Validate(Currency currency) 
+        {
+            return Currency._currencies.Any(c => c.Key.Equals(currency.Name) && c.Value.Equals(currency.Symbol));
+        }
+
     }
 }

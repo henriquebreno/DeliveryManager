@@ -72,8 +72,12 @@ namespace DeliveryManager.API.Controllers
         {
             try
             {
-                _productApplication.UpdateClient(updateProduct, productId);
+                _productApplication.UpdateProduct(updateProduct, productId);
                 return StatusCode((int)HttpStatusCode.OK);
+            }
+            catch (ArgumentException ex)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest, ex.Message);
             }
             catch (Exception ex)
             {
@@ -88,7 +92,7 @@ namespace DeliveryManager.API.Controllers
         {
             try
             {
-                _productApplication.DeleteClient(productId);
+                _productApplication.DeleteProduct(productId);
                 return StatusCode((int)HttpStatusCode.OK);
             }
             catch (Exception ex)

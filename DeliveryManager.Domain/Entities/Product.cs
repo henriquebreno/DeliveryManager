@@ -41,10 +41,7 @@ namespace DeliveryManager.Domain.Entities
             Description = product.Description;
             Name = product.Name;
             Url = product.Url;
-            Price = new Money(
-                new Currency(
-                    product.Price.Currency.Name, product.Price.Currency.Symbol),
-                product.Price.Amount);
+            Price = product.Price;
         }
 
     }

@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using DeliveryManager.Application.Dtos.Product;
+using DeliveryManager.Application.Exceptions;
 using DeliveryManager.Application.Interfaces;
+using DeliveryManager.Application.Validations;
 using DeliveryManager.Domain.Entities;
 using DeliveryManager.Domain.Interfaces;
 using DeliveryManager.Domain.ValueObject;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace DeliveryManager.Application.Commands
@@ -53,31 +56,41 @@ namespace DeliveryManager.Application.Commands
             return _mapper.Map<Product, ProductDto>(_productRepository.GetById(productId));
         }
 
-        public void DeleteClient(long productId)
+        public void DeleteProduct(long productId)
         {
             var product = _productRepository.GetById(productId);
             _productRepository.Delete(product);
             _unitOfWork.Commit();
         }
 
-        public void UpdateClient(ProductDto productDto, long productId)
+        public void UpdateProduct(ProductDto productDto, long productId)
         {
             var product = _productRepository.GetById(productId);
-            product.UpdateProduct(new Product()
+            var obj = new Product()
             {
                 Description = productDto.Description,
                 Name = productDto.Name,
                 Url = product.Url,
-                Price = new Money(
+                Price = new Money
+                (
                     new Currency(
-                        product.Price.Currency.Name, productDto.Price.Currency.Symbol),
-                        productDto.Price.Amount
-                        )
-            });
+                        product.Price.Currency.Name, 
+                        productDto.Price.Currency.Symbol
+                    ),
+                    productDto.Price.Amount
+                )
+
+            };
+            ProductValidator validator = new ProductValidator();
+            var validationResult = validator.Validate(obj);
+            if (!validationResult.IsValid) 
+            {
+                throw new ArgumentException(validationResult.Errors.First().ErrorMessage);
+            }
+
+            product.UpdateProduct(obj);
        
-            
-               
-           
+                       
             _productRepository.Update(product);
             _unitOfWork.Commit();
         }
