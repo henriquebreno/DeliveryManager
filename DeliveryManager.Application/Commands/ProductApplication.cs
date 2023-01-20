@@ -18,11 +18,14 @@ namespace DeliveryManager.Application.Commands
         protected IProductRepository _productRepository;
         protected IUnitOfWork _unitOfWork;
         protected IMapper _mapper;
-        public ProductApplication(IProductRepository productRepository, IUnitOfWork unitOfWork, IMapper mapper)
+        protected ProductValidator _validator;
+
+        public ProductApplication(IProductRepository productRepository, IUnitOfWork unitOfWork, IMapper mapper, ProductValidator validator)
         {
             _productRepository = productRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _validator = validator;
         }
 
         public void CreateProduct(ProductDto productDto)
@@ -74,23 +77,21 @@ namespace DeliveryManager.Application.Commands
                 Price = new Money
                 (
                     new Currency(
-                        product.Price.Currency.Name, 
+                        productDto.Price.Currency.Name, 
                         productDto.Price.Currency.Symbol
                     ),
                     productDto.Price.Amount
                 )
 
             };
-            ProductValidator validator = new ProductValidator();
-            var validationResult = validator.Validate(obj);
+
+            var validationResult = _validator.Validate(obj);
             if (!validationResult.IsValid) 
             {
                 throw new ArgumentException(validationResult.Errors.First().ErrorMessage);
             }
 
-            product.UpdateProduct(obj);
-       
-                       
+            product.UpdateProduct(obj);                         
             _productRepository.Update(product);
             _unitOfWork.Commit();
         }

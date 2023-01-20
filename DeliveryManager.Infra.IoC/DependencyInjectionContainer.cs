@@ -1,5 +1,6 @@
 ﻿using DeliveryManager.Application.Commands;
 using DeliveryManager.Application.Interfaces;
+using DeliveryManager.Application.Validations;
 using DeliveryManager.Domain.Interfaces;
 using DeliveryManager.Infra.Repositories;
 using DeliveryManager.Infra.Repositories.EF;
@@ -21,6 +22,7 @@ namespace DeliveryManager.Infra.IoC
             services.AddScoped(typeof(IBaseRepository<>),typeof(BaseRepository<>));
             services.AddScoped<Context>();
             services.AddScoped<IProductApplication, ProductApplication>();
+            services.AddScoped<ProductValidator>();
 
         }
     }

@@ -44,5 +44,9 @@ namespace DeliveryManager.Domain.Entities
             Price = product.Price;
         }
 
+        public bool IsValidAmount(decimal amount) 
+        {
+            return amount > 0;
+        }
     }
 }

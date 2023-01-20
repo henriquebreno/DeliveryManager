@@ -15,6 +15,10 @@ namespace DeliveryManager.Application.Validations
              .Must(x => Currency.Validate(x))
              .WithMessage($"Allowed values: " +
              $"{Currency.Real.Name},{Currency.Euro.Name},{Currency.CanadianDollar.Name},{Currency.USDollar.Name}");
+
+            RuleFor(x => x)
+            .Must(x => x.IsValidAmount(x.Price.Amount))
+            .WithMessage("Value cannot be less or equals than zero");
         }
 
        

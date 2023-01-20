@@ -75,7 +75,7 @@ namespace DeliveryManager.Domain.ValueObject
 
         public static bool Validate(Currency currency) 
         {
-            return Currency._currencies.Any(c => c.Key.Equals(currency.Name) && c.Value.Equals(currency.Symbol));
+            return Currency._currencies.Any(c => c.Key.Equals(currency.Name) && c.Value.Symbol.Equals(currency.Symbol));
         }
 
     }
