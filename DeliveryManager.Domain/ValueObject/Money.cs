@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace DeliveryManager.Domain.ValueObject
@@ -14,8 +15,9 @@ namespace DeliveryManager.Domain.ValueObject
             Currency = currency ?? throw new ArgumentNullException(nameof(currency));
         }
 
-        public decimal Amount { get; set ; }
-        public Currency Currency { get; set; }
+        [Column(TypeName = "decimal(18,2)")]
+        public decimal Amount { get; private set; }
+        public Currency Currency { get; private set; }
 
         public override int GetHashCode()
         {

@@ -1,4 +1,5 @@
-﻿using DeliveryManager.Application.Commands;
+﻿using DeliveryManager.Application;
+using DeliveryManager.Application.Commands;
 using DeliveryManager.Application.Interfaces;
 using DeliveryManager.Application.Validations;
 using DeliveryManager.Domain.Interfaces;
@@ -17,12 +18,15 @@ namespace DeliveryManager.Infra.IoC
         {
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IClientApplication, ClientApplication>();
             services.AddScoped(typeof(IBaseRepository<>),typeof(BaseRepository<>));
             services.AddScoped<Context>();
             services.AddScoped<IProductApplication, ProductApplication>();
-            services.AddScoped<ProductValidator>();
+            services.AddScoped<IOrderApplication, OrderApplication>();
+            services.AddSingleton<ProductValidator>();
+            services.AddSingleton<ClientValidator>();
 
         }
     }

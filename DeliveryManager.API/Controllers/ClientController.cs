@@ -62,6 +62,10 @@ namespace DeliveryManager.API.Controllers
                 _clientApplication.CreateClient(client);
                 return StatusCode((int)HttpStatusCode.Created);
             }
+            catch (ArgumentException ex)
+            {
+                return StatusCode((int)HttpStatusCode.BadRequest, ex.Message);
+            }
             catch (Exception ex)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);

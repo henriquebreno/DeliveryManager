@@ -74,9 +74,31 @@ namespace DeliveryManager.Infra.Repositories.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<long>("ClientId");
+
+                    b.Property<DateTimeOffset>("OrderDate");
+
                     b.HasKey("Id");
 
                     b.ToTable("Order");
+                });
+
+            modelBuilder.Entity("DeliveryManager.Domain.Entities.OrderItem", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<long?>("OrderId")
+                        .IsRequired();
+
+                    b.Property<int>("Units");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("DeliveryManager.Domain.Entities.Product", b =>
@@ -96,11 +118,67 @@ namespace DeliveryManager.Infra.Repositories.Migrations
                     b.ToTable("Product");
                 });
 
+            modelBuilder.Entity("DeliveryManager.Domain.Entities.ProductItemOrdered", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Name");
+
+                    b.Property<long>("OrderItemId");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderItemId")
+                        .IsUnique();
+
+                    b.ToTable("ProductItemOrdered");
+                });
+
             modelBuilder.Entity("DeliveryManager.Domain.Entities.ClientAddress", b =>
                 {
                     b.HasOne("DeliveryManager.Domain.Entities.Client", "Client")
                         .WithMany("ClientAddress")
                         .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DeliveryManager.Domain.Entities.Order", b =>
+                {
+                    b.OwnsOne("DeliveryManager.Domain.ValueObject.Address", "Address", b1 =>
+                        {
+                            b1.Property<long?>("OrderId");
+
+                            b1.Property<string>("City");
+
+                            b1.Property<string>("Country");
+
+                            b1.Property<string>("State");
+
+                            b1.Property<string>("Street");
+
+                            b1.Property<string>("ZipCode");
+
+                            b1.ToTable("OrderAddress");
+
+                            b1.HasOne("DeliveryManager.Domain.Entities.Order")
+                                .WithOne("Address")
+                                .HasForeignKey("DeliveryManager.Domain.ValueObject.Address", "OrderId")
+                                .OnDelete(DeleteBehavior.Cascade);
+                        });
+                });
+
+            modelBuilder.Entity("DeliveryManager.Domain.Entities.OrderItem", b =>
+                {
+                    b.HasOne("DeliveryManager.Domain.Entities.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
@@ -113,7 +191,8 @@ namespace DeliveryManager.Infra.Repositories.Migrations
                                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                             b1.Property<decimal>("Amount")
-                                .HasColumnName("Amount");
+                                .HasColumnName("Amount")
+                                .HasColumnType("decimal(18,2)");
 
                             b1.ToTable("Product");
 
@@ -142,6 +221,14 @@ namespace DeliveryManager.Infra.Repositories.Migrations
                                         .OnDelete(DeleteBehavior.Cascade);
                                 });
                         });
+                });
+
+            modelBuilder.Entity("DeliveryManager.Domain.Entities.ProductItemOrdered", b =>
+                {
+                    b.HasOne("DeliveryManager.Domain.Entities.OrderItem", "OrderItem")
+                        .WithOne("ProductItemOrdered")
+                        .HasForeignKey("DeliveryManager.Domain.Entities.ProductItemOrdered", "OrderItemId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618
         }

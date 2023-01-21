@@ -22,13 +22,13 @@ namespace DeliveryManager.Domain.Entities
             Url = url;
         }
 
-        public Money Price { get;  set; }
+        public Money Price { get;  private set; }
 
-        public string Name { get; set; }
+        public string Name { get; private set; }
 
-        public string Description { get; set; }
+        public string Description { get; private set; }
 
-        public string Url { get; set; }
+        public string Url { get; private set; }
 
 
         public override void Validate()

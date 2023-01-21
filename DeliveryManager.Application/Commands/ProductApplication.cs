@@ -32,7 +32,7 @@ namespace DeliveryManager.Application.Commands
         {
             var product = new Product
                 (new Domain.ValueObject.Money(
-                    new Domain.ValueObject.Currency(),productDto.Price.Amount), 
+                    new Domain.ValueObject.Currency(productDto.Price.Currency.Name, productDto.Price.Currency.Symbol),productDto.Price.Amount), 
                     productDto.Name, 
                     productDto.Description, 
                     productDto.Url
@@ -69,21 +69,15 @@ namespace DeliveryManager.Application.Commands
         public void UpdateProduct(ProductDto productDto, long productId)
         {
             var product = _productRepository.GetById(productId);
-            var obj = new Product()
-            {
-                Description = productDto.Description,
-                Name = productDto.Name,
-                Url = product.Url,
-                Price = new Money
+            var obj = new Product(new Money
                 (
                     new Currency(
-                        productDto.Price.Currency.Name, 
+                        productDto.Price.Currency.Name,
                         productDto.Price.Currency.Symbol
                     ),
                     productDto.Price.Amount
-                )
-
-            };
+                ), productDto.Name,productDto.Url,productDto.Description);
+            
 
             var validationResult = _validator.Validate(obj);
             if (!validationResult.IsValid) 

@@ -1,4 +1,5 @@
 ﻿using DeliveryManager.Domain.Entities;
+using DeliveryManager.Domain.ValueObject;
 using DeliveryManager.Infra.Repositories.Configurations;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -28,6 +29,8 @@ namespace DeliveryManager.Infra.Repositories.EF
         {
             modelBuilder.ApplyConfiguration(new ClientConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderConfiguration());
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

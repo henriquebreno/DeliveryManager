@@ -3,6 +3,7 @@ using DeliveryManager.Application.Dtos;
 using DeliveryManager.Application.Dtos.Address;
 using DeliveryManager.Application.Dtos.Client;
 using DeliveryManager.Application.Interfaces;
+using DeliveryManager.Application.Validations;
 using DeliveryManager.Domain.Entities;
 using DeliveryManager.Domain.Interfaces;
 using System;
@@ -17,16 +18,24 @@ namespace DeliveryManager.Application.Commands
         protected IClientRepository _clientRepository;
         protected IUnitOfWork _unitOfWork;
         protected IMapper _mapper;
-        public ClientApplication(IClientRepository clientRepository, IUnitOfWork unitOfWork, IMapper mapper) 
+        protected ClientValidator _validator;
+
+        public ClientApplication(IClientRepository clientRepository, IUnitOfWork unitOfWork, IMapper mapper, ClientValidator validator) 
         {
             _clientRepository = clientRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _validator = validator;
         }
 
         public void CreateClient(ClientDto clientdto)
         {
-            var client = _mapper.Map<ClientDto, Client>(clientdto);
+            var client = new Client(clientdto.Email, clientdto.Cpf, clientdto.FirstName, clientdto.LastName, clientdto.Cellphone, clientdto.BirthDate);
+            var validator = _validator.Validate(client);
+            if (!validator.IsValid) 
+            {
+                throw new ArgumentException(validator.Errors.First().ErrorMessage);
+            }
 
             _clientRepository.Add(client);
             _unitOfWork.Commit();

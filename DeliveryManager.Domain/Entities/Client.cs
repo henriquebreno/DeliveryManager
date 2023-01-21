@@ -17,7 +17,8 @@ namespace DeliveryManager.Domain.Entities
         public string Cellphone { get; set; }
         public string BirthDate { get; set; }
 
-        public ICollection<ClientAddress> ClientAddress { get; set; }
+        public ICollection<ClientAddress> ClientAddress { get; private set; }
+
 
         public override void Validate()
         {
@@ -74,6 +75,7 @@ namespace DeliveryManager.Domain.Entities
 
         }
 
+        
 
     }
 }
