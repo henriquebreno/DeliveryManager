@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Text;
 
 namespace DeliveryManager.Application.Dtos.Client
@@ -15,12 +16,7 @@ namespace DeliveryManager.Application.Dtos.Client
         [Required(ErrorMessage = "FirstName field is required")]
         [RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$",
          ErrorMessage = "Characters are not allowed.")]
-        public string FirstName { get; set; }
-
-        [Required(ErrorMessage = "LastName field is required")]
-        [RegularExpression(@"^[a-zA-Z''-'\s]{1,40}$",
-         ErrorMessage = "Characters are not allowed.")]
-        public string LastName { get; set; }
+        public string FullName { get; set; }
 
         [Required(ErrorMessage = "Email field is required")]
         public string Email { get; set; }
@@ -28,6 +24,8 @@ namespace DeliveryManager.Application.Dtos.Client
         [Required(ErrorMessage = "BirthDate field is required")]
         [RegularExpression(@"^([012]\d|30|31)/(0\d|10|11|12)/\d{4}$",
          ErrorMessage = "BirthDate pattern: dd/MM/YYYY")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MM/yyyy}")]
         public string BirthDate { get; set; }
 
         [Required(ErrorMessage = "Cellphone field is required")]

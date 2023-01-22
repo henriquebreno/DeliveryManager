@@ -2,6 +2,7 @@
 using DeliveryManager.Application.Dtos;
 using DeliveryManager.Application.Dtos.Address;
 using DeliveryManager.Application.Dtos.Client;
+using DeliveryManager.Application.Exceptions;
 using DeliveryManager.Application.Interfaces;
 using DeliveryManager.Application.Validations;
 using DeliveryManager.Domain.Entities;
@@ -30,7 +31,7 @@ namespace DeliveryManager.Application.Commands
 
         public void CreateClient(ClientDto clientdto)
         {
-            var client = new Client(clientdto.Email, clientdto.Cpf, clientdto.FirstName, clientdto.LastName, clientdto.Cellphone, clientdto.BirthDate);
+            var client = new Client(clientdto.Email, clientdto.Cpf, clientdto.FullName, clientdto.Cellphone, clientdto.BirthDate);
             var validator = _validator.Validate(client);
             if (!validator.IsValid) 
             {
@@ -68,6 +69,20 @@ namespace DeliveryManager.Application.Commands
         public void UpdateClient(ClientDto clientdto)
         {
             var client = _mapper.Map<ClientDto, Client>(clientdto);
+
+            if (client != null)
+            {
+                client.Email = clientdto.Email;
+                client.Cpf = clientdto.Cpf;
+                client.FullName = clientdto.FullName;
+                client.Cellphone = clientdto.Cellphone;
+                client.BirthDate = clientdto.BirthDate;
+            }
+            else 
+            {
+                throw new ClientNotFoundException();
+            }
+
             _clientRepository.Update(client);
             _unitOfWork.Commit();
         }
@@ -77,9 +92,17 @@ namespace DeliveryManager.Application.Commands
         {
             var clientAddress = new List<ClientAddressDto>();
             var client = _clientRepository.Include(o => o.ClientAddress).FirstOrDefault(o => o.Id == clientId);
-            foreach (var address in client.ClientAddress) 
+            if (client != null)
             {
-                clientAddress.Add(_mapper.Map<ClientAddress, ClientAddressDto>(address));
+                foreach (var address in client.ClientAddress)
+                {
+                    clientAddress.Add(_mapper.Map<ClientAddress, ClientAddressDto>(address));
+                }
+
+            }
+            else 
+            {
+                throw new ClientNotFoundException();
             }
             return clientAddress;
         }
@@ -88,22 +111,45 @@ namespace DeliveryManager.Application.Commands
         {
             var client = _clientRepository.Include(o => o.ClientAddress)
                                           .FirstOrDefault(o => o.Id == clientId);
-            if (client != null) 
+            if (client != null)
             {
-                var clientAddress = _mapper.Map<ClientAddressDto, ClientAddress>(clientAddressDto);
+                var clientAddress = new ClientAddress(
+                                            clientAddressDto.Street,
+                                            clientAddressDto.Number,
+                                            clientAddressDto.Complement,
+                                            clientAddressDto.District,
+                                            clientAddressDto.State,
+                                            clientAddressDto.City,
+                                            clientAddressDto.ZipCode
+                                            );
+               
                 client.AddAddressItem(clientAddress);
             }
-
+            else 
+            {
+                throw new ClientNotFoundException();
+            }
             _clientRepository.Update(client);
             _unitOfWork.Commit();
         }
 
         public void ChangeClientAddress(ClientAddressDto clientAddressDto, long clientId,long addressId)
         {
-            var client = _clientRepository.Include(o => o.ClientAddress).FirstOrDefault(o => o.Id == clientId);
-            var clientAddress = _mapper.Map<ClientAddressDto, ClientAddress>(clientAddressDto);
-            client.ChangeAddress(clientAddress);
-
+            var client = _clientRepository.Include(o => o.ClientAddress).FirstOrDefault(o => o.Id == clientId && o.ClientAddress.Any(cAddress=>cAddress.Id == addressId));
+            if (client != null)
+            {
+                client.ChangeAddress(addressId,clientAddressDto.Street,
+                                            clientAddressDto.Number,
+                                            clientAddressDto.Complement,
+                                            clientAddressDto.District,
+                                            clientAddressDto.State,
+                                            clientAddressDto.City,
+                                            clientAddressDto.ZipCode);
+            }
+            else 
+            {
+                throw new ClientNotFoundException();
+            }
             _clientRepository.Update(client);
             _unitOfWork.Commit();
         }

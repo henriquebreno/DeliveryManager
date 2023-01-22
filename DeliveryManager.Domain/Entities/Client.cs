@@ -12,8 +12,7 @@ namespace DeliveryManager.Domain.Entities
     {
         public string Email { get; set; }
         public string Cpf { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
+        public string FullName { get; set; }
         public string Cellphone { get; set; }
         public string BirthDate { get; set; }
 
@@ -25,14 +24,14 @@ namespace DeliveryManager.Domain.Entities
             throw new NotImplementedException();
         }
 
-        public Client(string email,string cpf,string firstName,string lastName,string cellphone,string birthDate)
+        public Client(string email, string cpf, string fullName, string cellphone, string birthDate )
         {
             Email = email;
             Cpf = cpf;
-            FirstName = firstName;
-            LastName = lastName;
+            FullName = fullName;
             Cellphone = cellphone;
             BirthDate = birthDate;
+            ClientAddress = new List<ClientAddress>();
         }
 
         public Client() { }
@@ -42,26 +41,28 @@ namespace DeliveryManager.Domain.Entities
             if (clientAddress != null) 
             {
                 this.ClientAddress.Add(clientAddress);
-            }
-                
+                ActiveAddress(clientAddress);
+            }                
         }
 
-        public void ChangeAddress(ClientAddress clientAddress)
+        public void ChangeAddress(long addressId,string street, string number, string complement, string district, string state, string city, string zipCode)
         {
-            if (clientAddress != null)
+
+            foreach (var address in this.ClientAddress) 
             {
-                foreach (var address in this.ClientAddress) 
+                if (address.Id == addressId) 
                 {
-                    if (address.Id == clientAddress.Id) 
-                    {
-                        address.Street = clientAddress.Street;
-                        address.City = clientAddress.City;
-                        address.Country = clientAddress.Country;
-                        address.State = clientAddress.State;
-                        address.ZipCode = clientAddress.ZipCode;
-                    }
+                    address.Street = street;
+                    address.Number = number;
+                    address.Complement = complement;
+                    address.District = district;
+                    address.State = state;
+                    address.City = city;
+                    address.ZipCode = zipCode;
+                    ActiveAddress(address);
                 }
             }
+            
 
         }
         public void RemoveAddress(long clientAddressId)
@@ -75,7 +76,21 @@ namespace DeliveryManager.Domain.Entities
 
         }
 
-        
+        public void ActiveAddress(ClientAddress clientAddress)
+        {
+            foreach (var address in this.ClientAddress)
+            {
+                if (address.Id == clientAddress.Id)
+                {
+                    address.IsActive = true;
+                }
+                else 
+                {
+                    address.IsActive = false;
+                }
+                
+            }
+        }
 
     }
 }

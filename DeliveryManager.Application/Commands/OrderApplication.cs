@@ -4,6 +4,7 @@ using DeliveryManager.Application.Interfaces;
 using DeliveryManager.Domain.Entities;
 using DeliveryManager.Domain.Interfaces;
 using System;
+using System.Collections.Generic;
 
 namespace DeliveryManager.Application
 {
@@ -28,16 +29,19 @@ namespace DeliveryManager.Application
             _productRepository = productRepository;
         }
 
-        public void CreateProduct(OrderDto orderDto)
+        public void CreateOrder(OrderDto orderDto)
         {
             var client = _clientRepository.GetById(orderDto.BuyerId);
             var order = new Order(client.Id,
                 new Domain.ValueObject.Address(
                     orderDto.OrderAddress.Street,
-                    orderDto.OrderAddress.City,
+                    orderDto.OrderAddress.Number,
+                    orderDto.OrderAddress.Complement,
+                    orderDto.OrderAddress.District,
                     orderDto.OrderAddress.State,
-                    orderDto.OrderAddress.Country,
-                    orderDto.OrderAddress.ZipCode)
+                    orderDto.OrderAddress.City,
+                    orderDto.OrderAddress.ZipCode
+                    )
                 );
 
             foreach (var orderItemDto in orderDto.OrderItems)
@@ -50,6 +54,24 @@ namespace DeliveryManager.Application
             _unitOfWork.Commit();
         }
 
+        public void DeleteOrder(long orderId)
+        {
+            throw new NotImplementedException();
+        }
 
+        public List<OrderDto> GetAll()
+        {
+            throw new NotImplementedException();
+        }
+
+        public OrderDto GetOrder(long orderId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateOrder(OrderDto orderDto, long orderId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -13,8 +13,7 @@ namespace DeliveryManager.Infra.Repositories.Configurations
 
 
             builder.OwnsOne(o =>o.Price).Property(o =>o.Amount).HasColumnName("Amount");
-            builder.OwnsOne(o => o.Price).OwnsOne(o => o.Currency).Property(o => o.Name).HasColumnName("CurrencyName");
-            builder.OwnsOne(o => o.Price).OwnsOne(o => o.Currency).Property(o => o.Symbol).HasColumnName("CurrencySymbol");
+            
 
             //builder.OwnsOne(o => o.Price).Property(o => o.Currency.Symbol).HasColumnName("CurrencySymbol");
 

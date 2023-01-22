@@ -8,30 +8,30 @@ namespace DeliveryManager.Domain.Entities
     public class ClientAddress : Entity
     {
         public String Street { get;  set; }
+        public String Number { get; set; }
+        public String Complement  { get;  set; }
+        public String District { get; set; }
         public String City { get;  set; }
         public String State { get;  set; }
-        public String Country { get;  set; }
         public String ZipCode { get;  set; }
+        public bool IsActive { get; set; }
+
 
         public virtual Client Client { get;  set; }
 
-
-        public ClientAddress() { }
-
-        public ClientAddress(string street, string city, string state, string country, string zipcode)
+        public ClientAddress(string street, string number, string complement, string district, string state, string city, string zipCode)
         {
             Street = street;
-            City = city;
+            Number = number;
+            Complement = complement;
+            District = district;
             State = state;
-            Country = country;
-            ZipCode = zipcode;
+            City = city;
+            ZipCode = zipCode;
+            IsActive = true;
         }
 
-
-        public ClientAddress(Client client)
-        {
-            this.Client = client;
-        }
+        public ClientAddress() { }
 
         public override void Validate()
         {

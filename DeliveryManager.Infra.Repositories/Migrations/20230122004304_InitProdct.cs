@@ -16,8 +16,7 @@ namespace DeliveryManager.Infra.Repositories.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Email = table.Column<string>(nullable: true),
                     Cpf = table.Column<string>(nullable: true),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
+                    FullName = table.Column<string>(nullable: true),
                     Cellphone = table.Column<string>(nullable: true),
                     BirthDate = table.Column<string>(nullable: true)
                 },
@@ -65,10 +64,13 @@ namespace DeliveryManager.Infra.Repositories.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Street = table.Column<string>(nullable: true),
+                    Number = table.Column<string>(nullable: true),
+                    Complement = table.Column<string>(nullable: true),
+                    District = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
-                    Country = table.Column<string>(nullable: true),
                     ZipCode = table.Column<string>(nullable: true),
+                    IsActive = table.Column<bool>(nullable: false),
                     ClientId = table.Column<long>(nullable: false)
                 },
                 constraints: table =>
@@ -87,9 +89,11 @@ namespace DeliveryManager.Infra.Repositories.Migrations
                 columns: table => new
                 {
                     Street = table.Column<string>(nullable: true),
+                    Number = table.Column<string>(nullable: true),
+                    Complement = table.Column<string>(nullable: true),
+                    District = table.Column<string>(nullable: true),
                     City = table.Column<string>(nullable: true),
                     State = table.Column<string>(nullable: true),
-                    Country = table.Column<string>(nullable: true),
                     ZipCode = table.Column<string>(nullable: true),
                     OrderId = table.Column<long>(nullable: false)
                 },

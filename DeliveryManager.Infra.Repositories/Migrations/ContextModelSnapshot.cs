@@ -33,9 +33,7 @@ namespace DeliveryManager.Infra.Repositories.Migrations
 
                     b.Property<string>("Email");
 
-                    b.Property<string>("FirstName");
-
-                    b.Property<string>("LastName");
+                    b.Property<string>("FullName");
 
                     b.HasKey("Id");
 
@@ -53,7 +51,13 @@ namespace DeliveryManager.Infra.Repositories.Migrations
                     b.Property<long?>("ClientId")
                         .IsRequired();
 
-                    b.Property<string>("Country");
+                    b.Property<string>("Complement");
+
+                    b.Property<string>("District");
+
+                    b.Property<bool>("IsActive");
+
+                    b.Property<string>("Number");
 
                     b.Property<string>("State");
 
@@ -157,7 +161,11 @@ namespace DeliveryManager.Infra.Repositories.Migrations
 
                             b1.Property<string>("City");
 
-                            b1.Property<string>("Country");
+                            b1.Property<string>("Complement");
+
+                            b1.Property<string>("District");
+
+                            b1.Property<string>("Number");
 
                             b1.Property<string>("State");
 

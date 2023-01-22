@@ -32,7 +32,7 @@ namespace DeliveryManager.Application.Commands
         {
             var product = new Product
                 (new Domain.ValueObject.Money(
-                    new Domain.ValueObject.Currency(productDto.Price.Currency.Name, productDto.Price.Currency.Symbol),productDto.Price.Amount), 
+                    productDto.Price.Amount), 
                     productDto.Name, 
                     productDto.Description, 
                     productDto.Url
@@ -70,11 +70,7 @@ namespace DeliveryManager.Application.Commands
         {
             var product = _productRepository.GetById(productId);
             var obj = new Product(new Money
-                (
-                    new Currency(
-                        productDto.Price.Currency.Name,
-                        productDto.Price.Currency.Symbol
-                    ),
+                (                  
                     productDto.Price.Amount
                 ), productDto.Name,productDto.Url,productDto.Description);
             

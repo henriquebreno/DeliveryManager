@@ -22,19 +22,36 @@ namespace DeliveryManager.API.Controllers
             _orderApplication = orderApplication;
         }
 
-        //// GET: api/<OrderController>
-        //[HttpGet]
-        //public IActionResult Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
+        // GET: api/<OrderController>
+        [HttpGet]
+        public IActionResult Get()
+        {
+            try
+            {
+                var orders = _orderApplication.GetAll();
+                return Ok(orders);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
 
-        //// GET api/<OrderController>/5
-        //[HttpGet("{id}")]
-        //public IActionResult Get(int id)
-        //{
-        //    return "value";
-        //}
+        // GET api/<OrderController>/5
+        [HttpGet("{orderId}")]
+        public IActionResult GetOrderById(long orderId)
+        {
+            var order = new OrderDto();
+            try
+            {
+                order = _orderApplication.GetOrder(orderId);
+                return Ok(order);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, order);
+            }
+        }
 
         // POST api/<OrderController>
         [HttpPost]
@@ -42,7 +59,7 @@ namespace DeliveryManager.API.Controllers
         {
             try
             {
-                _orderApplication.CreateProduct(orderDto);
+                _orderApplication.CreateOrder(orderDto);
                 return StatusCode((int)HttpStatusCode.Created);
             }
             catch (Exception ex)
@@ -51,16 +68,34 @@ namespace DeliveryManager.API.Controllers
             }
         }
 
-        //// PUT api/<OrderController>/5
-        //[HttpPut("{id}")]
-        //public IActionResult Put(int id, [FromBody] string value)
-        //{
-        //}
+        // PUT api/<OrderController>/5
+        [HttpPut("{orderId}")]
+        public IActionResult ChangeOrder([FromBody] UpdateOrderDto client,long orderId)
+        {
+            try
+            {
+                _orderApplication.UpdateOrder(client, orderId);
+                return StatusCode((int)HttpStatusCode.Created);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
 
-        //// DELETE api/<OrderController>/5
-        //[HttpDelete("{id}")]
-        //public IActionResult Delete(int id)
-        //{
-        //}
+        // DELETE api/<OrderController>/5
+        [HttpDelete("{orderId}")]
+        public IActionResult Delete(long orderId)
+        {
+            try
+            {
+                _orderApplication.DeleteOrder(orderId);
+                return StatusCode((int)HttpStatusCode.Created);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, ex.Message);
+            }
+        }
     }
 }
