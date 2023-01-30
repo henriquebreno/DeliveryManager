@@ -29,7 +29,6 @@ namespace DeliveryManager.Domain.Entities
             Email = email;
             Cpf = cpf;
             FullName = fullName;
-            Cellphone = cellphone;
             BirthDate = birthDate;
             ClientAddress = new List<ClientAddress>();
         }
@@ -91,6 +90,16 @@ namespace DeliveryManager.Domain.Entities
                 
             }
         }
+        public void SetCellphone(string cellphone)
+        {
+            var formattedCellphone = GetFormattedCellphone(cellphone);
+            Cellphone = formattedCellphone;
 
+        }
+        public string GetFormattedCellphone(string cellphone) 
+        {
+            string numericPhone = new String(cellphone.Where(Char.IsDigit).ToArray());
+            return numericPhone;
+        }
     }
 }

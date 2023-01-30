@@ -56,17 +56,35 @@ namespace DeliveryManager.Application
 
         public void DeleteOrder(long orderId)
         {
-            throw new NotImplementedException();
+            var order = _orderRepository.GetById(orderId);
+            if (order == null) 
+            {
+                throw new NotImplementedException();
+            }
+            _orderRepository.Delete(order);
+            _unitOfWork.Commit();
         }
 
         public List<OrderDto> GetAll()
         {
-            throw new NotImplementedException();
+            var orders = _orderRepository.Get();
+            var ordersDto = new List<OrderDto>();
+            foreach (var order in orders)
+            {
+                ordersDto.Add(_mapper.Map<Order, OrderDto>(order));
+            }
+
+            return ordersDto;
         }
 
         public OrderDto GetOrder(long orderId)
         {
-            throw new NotImplementedException();
+            var order = _mapper.Map<Order, OrderDto>(_orderRepository.GetById(orderId));
+            if (order == null)
+            {
+                throw new NotImplementedException();
+            }
+            return order;
         }
 
         public void UpdateOrder(OrderDto orderDto, long orderId)

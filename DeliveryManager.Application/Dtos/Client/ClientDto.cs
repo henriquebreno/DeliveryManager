@@ -29,7 +29,7 @@ namespace DeliveryManager.Application.Dtos.Client
         public string BirthDate { get; set; }
 
         [Required(ErrorMessage = "Cellphone field is required")]
-        [RegularExpression(@"(\(\d{2}\)\s)(\d{4,5}\-\d{4})",
+        [RegularExpression(@"^1\d\d(\d\d)?$|^0800 ?\d{3} ?\d{4}$|^(\(0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d\) ?|0?([1-9a-zA-Z][0-9a-zA-Z])?[1-9]\d[ .-]?)?(9|9[ .-])?[2-9]\d{3}[ .-]?\d{4}$",
          ErrorMessage = "Cellphone pattern: (ddd) XXXXX-XXXX")]
         public string Cellphone { get; set; }
         

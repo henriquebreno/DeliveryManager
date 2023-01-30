@@ -32,6 +32,7 @@ namespace DeliveryManager.Application.Commands
         public void CreateClient(ClientDto clientdto)
         {
             var client = new Client(clientdto.Email, clientdto.Cpf, clientdto.FullName, clientdto.Cellphone, clientdto.BirthDate);
+            client.SetCellphone(clientdto.Cellphone);
             var validator = _validator.Validate(client);
             if (!validator.IsValid) 
             {
@@ -68,15 +69,15 @@ namespace DeliveryManager.Application.Commands
 
         public void UpdateClient(ClientDto clientdto)
         {
-            var client = _mapper.Map<ClientDto, Client>(clientdto);
+            var client = _clientRepository.GetById(clientdto.ClientId);
 
             if (client != null)
             {
                 client.Email = clientdto.Email;
                 client.Cpf = clientdto.Cpf;
-                client.FullName = clientdto.FullName;
-                client.Cellphone = clientdto.Cellphone;
+                client.FullName = clientdto.FullName;                
                 client.BirthDate = clientdto.BirthDate;
+                client.SetCellphone(clientdto.Cellphone);
             }
             else 
             {
@@ -98,7 +99,6 @@ namespace DeliveryManager.Application.Commands
                 {
                     clientAddress.Add(_mapper.Map<ClientAddress, ClientAddressDto>(address));
                 }
-
             }
             else 
             {
