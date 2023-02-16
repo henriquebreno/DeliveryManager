@@ -11,6 +11,6 @@ namespace DeliveryManager.Application.Dtos.Product
         [DisplayFormat(DataFormatString = "{0:C0}")]
         public decimal Amount { get; set; }
 
-        public CurrencyDto Currency { get; set; }
+
     }
 }
