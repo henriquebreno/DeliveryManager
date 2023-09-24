@@ -15,4 +15,8 @@
     <ProjectReference Include="..\DeliveryManager.Domain\DeliveryManager.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dtos\User\" />
+  </ItemGroup>
+
 </Project>

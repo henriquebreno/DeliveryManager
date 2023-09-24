@@ -1,21 +1,26 @@
 ﻿using AutoMapper;
 using DeliveryManager.API.AutoMapper;
+using DeliveryManager.API.Models.User;
 using DeliveryManager.Application.Dtos;
 using DeliveryManager.Infra.IoC;
 using DeliveryManager.Infra.Repositories.EF;
 using FluentValidation;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace DeliveryManager.API
@@ -32,8 +37,10 @@ namespace DeliveryManager.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddIdentity<ApplicationUser, IdentityRole>()
+            .AddEntityFrameworkStores<Context>()
+            .AddDefaultTokenProviders();
 
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
             services.AddDbContext<Context>
                (optionsAction: options => options.UseSqlServer
                (Configuration.GetConnectionString("DefaultConnection")));
@@ -49,6 +56,24 @@ namespace DeliveryManager.API
                     Version = "v1",
                     Description = "Sample service for Learner",
                 });
+            });
+
+            // Configuração de autenticação
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidIssuer = "seu-emissor",
+                    ValidAudience = "sua-audiencia",
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("sua-chave-secreta"))
+                };
             });
 
             // In production, the React files will be served from this directory
@@ -78,8 +103,11 @@ namespace DeliveryManager.API
                 app.UseHsts();
             }
 
+            app.UseAuthentication(); // Adicione esta linha
             app.UseHttpsRedirection();
             app.UseMvc();
         }
+
+
     }
 }

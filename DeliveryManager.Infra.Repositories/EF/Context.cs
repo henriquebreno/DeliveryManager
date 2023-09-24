@@ -1,6 +1,8 @@
-﻿using DeliveryManager.Domain.Entities;
+﻿using DeliveryManager.API.Models.User;
+using DeliveryManager.Domain.Entities;
 using DeliveryManager.Domain.ValueObject;
 using DeliveryManager.Infra.Repositories.Configurations;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -10,7 +12,7 @@ using System.Text;
 
 namespace DeliveryManager.Infra.Repositories.EF
 {
-    public class Context : DbContext
+    public class Context : IdentityDbContext <ApplicationUser>
     {
         public Context(DbContextOptions<Context> options) : base(options)
         {
@@ -30,7 +32,7 @@ namespace DeliveryManager.Infra.Repositories.EF
             modelBuilder.ApplyConfiguration(new ClientConfiguration());
             modelBuilder.ApplyConfiguration(new ProductConfiguration());
             modelBuilder.ApplyConfiguration(new OrderConfiguration());
-
+            base.OnModelCreating(modelBuilder);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
