@@ -1,4 +1,5 @@
 ﻿using DeliveryManager.API.Models.User;
+using DeliveryManager.Infra.Repositories.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -13,23 +14,29 @@ using System.Threading.Tasks;
 
 namespace DeliveryManager.API.Controllers
 {
+
+    [Route("api/[controller]")]
     public class UserController : ControllerBase
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IConfiguration _configuration;
+        private readonly RoleManager<ApplicationRole> _roleManager;
+
 
         public UserController(UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _configuration = configuration;
+            _roleManager = roleManager;
         }
 
 
-        [HttpPost("Login")]
+        [HttpPost("Token")]
         public async Task<ActionResult<UserToken>> Login([FromBody] UserInfo userInfo)
         {
             var result = await _signInManager.PasswordSignInAsync(userInfo.Email, userInfo.Password, isPersistent: false, lockoutOnFailure: false);
@@ -44,20 +51,73 @@ namespace DeliveryManager.API.Controllers
             }
         }
 
-        [HttpPost("User")]
-        public async Task<ActionResult<UserToken>> CreateUser([FromBody] UserInfo model)
+
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] UserInfo model)
         {
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            if (model == null)
+            {
+                return BadRequest("Dados inválidos");
+            }
+
+            if (!await _roleManager.RoleExistsAsync(model.RoleName))
+            {
+                return BadRequest("A role especificada não existe.");
+            }
+
+            var user = new ApplicationUser
+            {
+                UserName = model.UserName,
+                Email = model.Email,              
+            };
 
             var result = await _userManager.CreateAsync(user, model.Password);
+
             if (result.Succeeded)
             {
-                return BuildToken(model);
+                var roleResult = await _userManager.AddToRoleAsync(user, model.RoleName);
+
+                if (roleResult.Succeeded)
+                {
+                    return Ok("Usuário criado e atribuído à role com sucesso.");
+                }
+                else
+                {
+                    return BadRequest(roleResult.Errors);
+                }
             }
             else
             {
-                return BadRequest("Usuário ou senha inválidos");
+                return BadRequest(result.Errors);
             }
+        }
+
+        [HttpPost]
+        [Route("Role")]
+        public async Task<IActionResult> CreateRole([FromBody] string roleName)
+        {
+            if (string.IsNullOrEmpty(roleName))
+            {
+                return BadRequest("O nome da role não pode ser vazio.");
+            }
+
+            var role = new ApplicationRole { Name = roleName };
+            var result = await _roleManager.CreateAsync(role);
+
+            if (result.Succeeded)
+            {
+                return Ok("Role criada com sucesso.");
+            }
+
+            return BadRequest(result.Errors);
+        }
+
+        [HttpGet]
+        [Route("Role")]
+        public IActionResult GetAllRoles()
+        {
+            var roles = _roleManager.Roles.ToList();
+            return Ok(roles);
         }
 
         private UserToken BuildToken(UserInfo userInfo)

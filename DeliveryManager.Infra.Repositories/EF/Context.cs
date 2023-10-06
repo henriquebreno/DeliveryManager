@@ -2,6 +2,7 @@
 using DeliveryManager.Domain.Entities;
 using DeliveryManager.Domain.ValueObject;
 using DeliveryManager.Infra.Repositories.Configurations;
+using DeliveryManager.Infra.Repositories.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,7 +13,7 @@ using System.Text;
 
 namespace DeliveryManager.Infra.Repositories.EF
 {
-    public class Context : IdentityDbContext <ApplicationUser>
+    public class Context : IdentityDbContext <ApplicationUser, ApplicationRole,string>
     {
         public Context(DbContextOptions<Context> options) : base(options)
         {
@@ -26,6 +27,8 @@ namespace DeliveryManager.Infra.Repositories.EF
         public DbSet<Client> Client { get; set; }
 
         public DbSet<Order> Order { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

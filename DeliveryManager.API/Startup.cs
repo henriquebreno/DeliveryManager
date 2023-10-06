@@ -4,6 +4,7 @@ using DeliveryManager.API.Models.User;
 using DeliveryManager.Application.Dtos;
 using DeliveryManager.Infra.IoC;
 using DeliveryManager.Infra.Repositories.EF;
+using DeliveryManager.Infra.Repositories.Identity;
 using FluentValidation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -37,7 +38,7 @@ namespace DeliveryManager.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
             .AddEntityFrameworkStores<Context>()
             .AddDefaultTokenProviders();
 
